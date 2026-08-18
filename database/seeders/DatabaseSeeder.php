@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             AmbienteSeeder::class,
             EvidenciaSeeder::class,
             habitacionesSeeder::class,
-
+            historialSeeder::class,
         ]);
     }
 }

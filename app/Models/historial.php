@@ -13,4 +13,11 @@ class historial extends Model
         'observaciones',
         'usuario_IdUsuario'
     ];
+
+    public $table = 'historial';
+
+    public $primaryKey = 'idhistorial';
+
+    public $timestamps = false;
+
 }
