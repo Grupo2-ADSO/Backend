@@ -16,7 +16,7 @@ class habitaciones extends Model
 
     public $incrementing = false;
 
-    public $KeyType = 'int';
+    public $keyType = 'int';
 
     public $primaryKey = 'No_habitacion';
 

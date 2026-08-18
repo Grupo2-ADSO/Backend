@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\orden_de_trabajo;
+use App\Models\ordenesdetrabajo;
 
 class ordenesdetrabajocontroller extends Controller
 {
     
     public function index()
     {
-        $ordenes = orden_de_trabajo::with([
+        $ordenes = ordenesdetrabajo::with([
             'usuario',
             'reporte',
             'ambiente',
@@ -23,7 +23,7 @@ class ordenesdetrabajocontroller extends Controller
     // Mostrar una orden específica
     public function show($id)
     {
-        $orden = orden_de_trabajo::with([
+        $orden = ordenesdetrabajo::with([
             'usuario',
             'reporte',
             'ambiente',
@@ -46,7 +46,7 @@ class ordenesdetrabajocontroller extends Controller
             'usuario_IdUsuario' => 'required|integer',
         ]);
 
-        $orden = orden_de_trabajo::create([
+        $orden = ordenesdetrabajo::create([
             'descripcion' => $request->descripcion,
             'prioridad' => $request->prioridad,
             'fecha_creacion' => $request->fecha_creacion,
@@ -65,7 +65,7 @@ class ordenesdetrabajocontroller extends Controller
     
     public function update(Request $request, $id)
     {
-        $orden = orden_de_trabajo::findOrFail($id);
+        $orden = ordenesdetrabajo::findOrFail($id);
 
         $request->validate([
             'descripcion' => 'required|string|max:200',
@@ -96,7 +96,7 @@ class ordenesdetrabajocontroller extends Controller
     
     public function destroy($id)
     {
-        $orden = orden_de_trabajo::findOrFail($id);
+        $orden = ordenesdetrabajo::findOrFail($id);
 
         $orden->delete();
 
