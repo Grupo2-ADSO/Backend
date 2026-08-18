@@ -80,7 +80,7 @@ class habitacionesController extends Controller
 
             if (!$habitacion) {
                 return response()->json([
-                    "resultado"
+                    "resultado" => "error"
                 ], 404);
             }
 
