@@ -13,7 +13,7 @@ class EvidenciaSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('evidencia')->insert([
+        DB::table('evidencias')->insert([
             [
                 "tipo" => "imagen",
                 "fecha_envio" => "2026-03-13 10:40:00",

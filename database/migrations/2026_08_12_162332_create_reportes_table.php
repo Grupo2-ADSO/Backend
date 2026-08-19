@@ -16,7 +16,10 @@ return new class extends Migration
           $table->string('Tipo', 50);
           $table->dateTime('fecha_registro');
           $table->foreignId('usuario_IdUsuario')->constrained('usuarios', 'IdUsuario');
-          $table->foreignId('habitaciones_No_habitacion')->constrained('habitaciones', 'No_habitacion');
+          $table->integer('habitaciones_No_habitacion');
+            $table->foreign('habitaciones_No_habitacion')
+                  ->references('No_habitacion')
+                  ->on('habitaciones');
           $table->foreignId('ambientes_id_ambiente')->constrained('ambientes', 'id_ambiente');
         });
     }

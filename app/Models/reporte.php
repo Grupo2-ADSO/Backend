@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\habitaciones;
+use App\Models\Ambiente;
+use App\Models\usuario;
 
 class reporte extends Model
 {
@@ -23,12 +26,12 @@ class reporte extends Model
     {
         return $this->belongsTo(usuario::class,'usuario_IdUsuario','IdUsuario');
     }
-    public function habitacion()
+    public function habitaciones()
     {
-        return $this->belongsTo(habitacion::class,'habitaciones_No_habitacion','No_habitacion');
+        return $this->belongsTo(habitaciones::class,'habitaciones_No_habitacion','No_habitacion');
     }
     public function ambiente()
     {
-        return $this->belongsTo( ambiente::class,'ambientes_id_ambiente','id_ambiente');
+        return $this->belongsTo( Ambiente::class,'ambientes_id_ambiente','id_ambiente');
     }
 }

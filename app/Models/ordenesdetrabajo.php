@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class orden_de_trabajo extends Model
+class ordenesdetrabajo extends Model
 {
-    public $table = 'ordenes_de_trabajo';
+    public $table = 'ordenes_de_trabajos';
 
     protected $primaryKey = 'idOrden';
 

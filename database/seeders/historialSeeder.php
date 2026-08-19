@@ -6,7 +6,7 @@ use App\Models\historial;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class historialSeeder extends Seeder
+class HistorialSeeder extends Seeder
 {
     /**
      * Run the database seeds.

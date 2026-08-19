@@ -18,7 +18,10 @@ return new class extends Migration
             $table->date('fecha_creacion');
             $table->foreignId('reportes_IdReporte')->constrained('reportes', 'IdReporte');
             $table->foreignId('ambientes_id_ambiente')->constrained('ambientes', 'id_ambiente');
-            $table->foreignId('habitaciones_No_habitacion')->constrained('habitaciones', 'No_habitacion');
+          $table->integer('habitaciones_No_habitacion');
+            $table->foreign('habitaciones_No_habitacion')
+                  ->references('No_habitacion')
+                  ->on('habitaciones');
             $table->foreignId('usuario_IdUsuario')->constrained('usuarios', 'IdUsuario');
         });
     }

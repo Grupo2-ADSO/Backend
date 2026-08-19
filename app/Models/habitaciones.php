@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class habitaciones extends Model
 {
     public $fillable = [
@@ -16,7 +17,7 @@ class habitaciones extends Model
 
     public $incrementing = false;
 
-    public $KeyType = 'int';
+    public $keyType = 'int';
 
     public $primaryKey = 'No_habitacion';
 

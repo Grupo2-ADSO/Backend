@@ -6,13 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class rol extends Model
 {
-    protected $table = 'rol';
-
+    protected $table = 'rols';
     protected $primaryKey = 'IdRol';
     public $fillable = [
         'Nombre'
     ];
-
     public $timestamps = false;
 
 }

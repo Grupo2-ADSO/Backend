@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\reporte;
 
+
 class reportecontroller extends Controller
 {
 
@@ -12,7 +13,7 @@ class reportecontroller extends Controller
     {
         $reportes = reporte::with([
             'usuario',
-            'habitacion',
+            'habitaciones',
             'ambiente'
         ])->get();
 
@@ -24,7 +25,7 @@ class reportecontroller extends Controller
     {
         $reporte = reporte::with([
             'usuario',
-            'habitacion',
+            'habitaciones',
             'ambiente'
         ])->findOrFail($id);
 
