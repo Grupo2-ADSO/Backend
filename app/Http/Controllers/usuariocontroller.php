@@ -21,9 +21,9 @@ class usuariocontroller extends Controller
     // Mostrar un usuario específico
     public function show($id)
     {
-        $usuario = usuario::with('rol')->findOrFail($id);
+        $usuarios = usuario::with('rol')->findOrFail($id);
 
-        return response()->json($usuario);
+        return response()->json($usuarios);
     }
 
 
@@ -33,15 +33,15 @@ class usuariocontroller extends Controller
         $request->validate([
             'Nombre' => 'required|string|max:100',
             'Apellidos' => 'required|string|max:100',
-            'Correo' => 'required|email|max:150|unique:usuario,Correo',
+            'Correo' => 'required|email|max:150|unique:usuarios,Correo',
             'Contrasena' => 'required|string|min:6|max:100',
             'Estado' => 'nullable|in:Activo,Inactivo',
-            'Cedula' => 'required|integer|unique:usuario,Cedula',
+            'Cedula' => 'required|integer|unique:usuarios,Cedula',
             'Telefono' => 'nullable|integer',
-            'Rol_IdRol' => 'required|exists:rol,IdRol',
+            'Rol_IdRol' => 'required|exists:rols,IdRol',
         ]);
 
-        $usuario = usuario::create([
+        $usuarios = usuario::create([
             'Nombre' => $request->Nombre,
             'Apellidos' => $request->Apellidos,
             'Correo' => $request->Correo,
@@ -54,7 +54,7 @@ class usuariocontroller extends Controller
 
         return response()->json([
             'mensaje' => 'Usuario creado correctamente',
-            'usuario' => $usuario
+            'usuario' => $usuarios
         ], 201);
     }
 
@@ -62,37 +62,37 @@ class usuariocontroller extends Controller
    
     public function update(Request $request, $id)
     {
-        $usuario = usuario::findOrFail($id);
+        $usuarios = usuario::findOrFail($id);
 
         $request->validate([
             'Nombre' => 'required|string|max:100',
             'Apellidos' => 'required|string|max:100',
-            'Correo' => 'required|email|max:150|unique:usuario,Correo,' . $id . ',IdUsuario',
+            'Correo' => 'required|email|max:150|unique:usuarios,Correo,' . $id . ',IdUsuario',
             'Contrasena' => 'nullable|string|min:6|max:100',
             'Estado' => 'nullable|in:Activo,Inactivo',
-            'Cedula' => 'required|integer|unique:usuario,Cedula,' . $id . ',IdUsuario',
+            'Cedula' => 'required|integer|unique:usuarios,Cedula,' . $id . ',IdUsuario',
             'Telefono' => 'nullable|integer',
-            'Rol_IdRol' => 'required|exists:rol,IdRol',
+            'Rol_IdRol' => 'required|exists:rols,IdRol',
         ]);
 
-        $usuario->Nombre = $request->Nombre;
-        $usuario->Apellidos = $request->Apellidos;
-        $usuario->Correo = $request->Correo;
-        $usuario->Estado = $request->Estado ?? $usuario->Estado;
-        $usuario->Cedula = $request->Cedula;
-        $usuario->Telefono = $request->Telefono;
-        $usuario->Rol_IdRol = $request->Rol_IdRol;
+        $usuarios->Nombre = $request->Nombre;
+        $usuarios->Apellidos = $request->Apellidos;
+        $usuarios->Correo = $request->Correo;
+        $usuarios->Estado = $request->Estado ?? $usuarios->Estado;
+        $usuarios->Cedula = $request->Cedula;
+        $usuarios->Telefono = $request->Telefono;
+        $usuarios->Rol_IdRol = $request->Rol_IdRol;
 
         // Solo cambiar la contraseña si se envía una nueva
         if ($request->filled('Contrasena')) {
-            $usuario->Contrasena = Hash::make($request->Contrasena);
+            $usuarios->Contrasena = Hash::make($request->Contrasena);
         }
 
-        $usuario->save();
+        $usuarios->save();
 
         return response()->json([
             'mensaje' => 'Usuario actualizado correctamente',
-            'usuario' => $usuario
+            'usuario' => $usuarios
         ]);
     }
 
@@ -100,9 +100,9 @@ class usuariocontroller extends Controller
     // Eliminar un usuario
     public function destroy($id)
     {
-        $usuario = usuario::findOrFail($id);
+        $usuarios = usuario::findOrFail($id);
 
-        $usuario->delete();
+        $usuarios->delete();
 
         return response()->json([
             'mensaje' => 'Usuario eliminado correctamente'

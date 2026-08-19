@@ -23,7 +23,7 @@ class InformacionRolController extends Controller
             'Contrasena' => 'required'
         ]);
 
-        // Buscar usuario
+        
         $usuario = usuario::with('rol')
             ->where('Correo', $request->Correo)
             ->first();
@@ -35,7 +35,7 @@ class InformacionRolController extends Controller
             ], 401);
         }
 
-        // Verificar contraseña
+        
         if (!Hash::check($request->Contrasena, $usuario->Contrasena)) {
             return response()->json([
                 'resultado' => 'error',
@@ -43,7 +43,7 @@ class InformacionRolController extends Controller
             ], 401);
         }
 
-        // Verificar rol
+        
         if (!$usuario->rol) {
             return response()->json([
                 'resultado' => 'error',
@@ -53,11 +53,7 @@ class InformacionRolController extends Controller
 
         $rol = strtolower(trim($usuario->rol->Nombre));
 
-        /*
-        |--------------------------------------------------------------------------
-        | ADMINISTRADOR
-        |--------------------------------------------------------------------------
-        */
+        
 
         if ($rol === 'administrador') {
 
@@ -103,11 +99,7 @@ class InformacionRolController extends Controller
             ], 200);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | SUPERVISOR
-        |--------------------------------------------------------------------------
-        */
+        
 
         if ($rol === 'supervisor') {
 
@@ -149,15 +141,11 @@ class InformacionRolController extends Controller
             ], 200);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | OPERARIO
-        |--------------------------------------------------------------------------
-        */
+       
 
         if ($rol === 'operario') {
 
-            // Solo órdenes asignadas a este usuario
+            
             $ordenes = ordenesdetrabajo::with([
                 'reporte',
                 'ambiente',
@@ -166,20 +154,20 @@ class InformacionRolController extends Controller
             ->where('usuario_IdUsuario', $usuario->IdUsuario)
             ->get();
 
-            // IDs de las órdenes
+            
             $idsOrdenes = $ordenes
                 ->pluck('idOrden')
                 ->filter()
                 ->unique()
                 ->toArray();
 
-            // Evidencias de sus órdenes
+            
             $evidencias = Evidencia::whereIn(
                 'ordenes_de_trabajo_idOrden',
                 $idsOrdenes
             )->get();
 
-            // Habitaciones relacionadas
+            
             $idsHabitaciones = $ordenes
                 ->pluck('habitaciones_No_habitacion')
                 ->filter()
@@ -191,13 +179,13 @@ class InformacionRolController extends Controller
                 $idsHabitaciones
             )->get();
 
-            // Historial del operario
+            
             $historialOperario = historial::where(
                 'usuario_IdUsuario',
                 $usuario->IdUsuario
             )->get();
 
-            // Evaluaciones relacionadas
+           
             $idsEvaluaciones = $evidencias
                 ->pluck('evalucion_idEvalucion')
                 ->filter()
