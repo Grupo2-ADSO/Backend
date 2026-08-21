@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class EvidenciaController extends Controller
 {
-   public function index(Request $request)
+public function index(Request $request)
 {
     try {
 
@@ -16,13 +16,22 @@ class EvidenciaController extends Controller
 
         $usuario->load('rol');
 
-        $rol = strtolower(trim($usuario->rol->Nombre));
+        if (!$usuario->rol) {
+            return response()->json([
+                "resultado" => "error",
+                "mensaje" => "El usuario no tiene un rol asignado."
+            ], 403);
+        }
 
-        if ($rol === 'administrador' || $rol === 'supervisor') {
+        $idRol = (int) $usuario->rol->IdRol;
+
+        // Administrador y Supervisor: todas las evidencias
+        if ($idRol === 1 || $idRol === 2) {
 
             $evidencias = Evidencia::all();
 
-        } else {
+        // Operario: solo evidencias de sus órdenes
+        } elseif ($idRol === 3) {
 
             $ordenes = \App\Models\ordenesdetrabajo::where(
                 'usuario_IdUsuario',
@@ -33,6 +42,13 @@ class EvidenciaController extends Controller
                 'ordenes_de_trabajo_idOrden',
                 $ordenes
             )->get();
+
+        } else {
+
+            return response()->json([
+                "resultado" => "error",
+                "mensaje" => "Rol no autorizado."
+            ], 403);
         }
 
         return response()->json([
@@ -44,7 +60,7 @@ class EvidenciaController extends Controller
 
         return response()->json([
             "resultado" => "error",
-            "mensaje" => "No fue posible encontrar la evidencia.",
+            "mensaje" => "No fue posible encontrar las evidencias.",
             "error" => $e->getMessage()
         ], 500);
     }
