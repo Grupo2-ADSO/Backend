@@ -140,6 +140,11 @@ Route::middleware('auth:sanctum')->group(function () {
             'index'
         ]);
 
+        Route::post('/reportes', [
+            reportecontroller::class,
+            'store'
+        ]);
+
         Route::get('/reportes/{id}', [
             reportecontroller::class,
             'show'
@@ -156,15 +161,6 @@ Route::middleware('auth:sanctum')->group(function () {
         ]);
     });
 
-
-
-    Route::middleware('role:administrador,supervisor,operario')->group(function () {
-
-        Route::post('/reportes', [
-            reportecontroller::class,
-            'store'
-        ]);
-    });
 
 
 
