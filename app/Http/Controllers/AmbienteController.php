@@ -55,7 +55,7 @@ class AmbienteController extends Controller
             if (!$ambiente) {
                 return response()->json([
                     "resultado" => "error",
-                    "mensaje" => "El ambiente solisitado no existe"
+                    "mensaje" => "El ambiente solicitado no existe"
                 ], 404);
             }
 
@@ -80,7 +80,7 @@ class AmbienteController extends Controller
             if (!$ambiente) {
                 return response()->json([
                     "resultado" => "error",
-                    "mensaje" => "El ambiente solisitado no existe"
+                    "mensaje" => "El ambiente solicitado no existe"
                 ], 404);
             }
 
@@ -111,7 +111,7 @@ class AmbienteController extends Controller
                 return response()->json([
                     "resultado" => "error",
                     "mensaje" => "El ambiente solicitado no existe"
-                ], );
+                ], 400);
             }
 
             $ambiente->delete();

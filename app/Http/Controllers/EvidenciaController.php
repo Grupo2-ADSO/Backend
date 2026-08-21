@@ -8,23 +8,47 @@ use Illuminate\Support\Facades\Storage;
 
 class EvidenciaController extends Controller
 {
-    public function index()
-    {
-        try {
+   public function index(Request $request)
+{
+    try {
+
+        $usuario = $request->user();
+
+        $usuario->load('rol');
+
+        $rol = strtolower(trim($usuario->rol->Nombre));
+
+        if ($rol === 'administrador' || $rol === 'supervisor') {
+
             $evidencias = Evidencia::all();
 
-            return response()->json([
-                "resultado" => "ok",
-                "datos" => $evidencias
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                "resultado" => "error",
-                "mensaje" => "No fue posible encontrar la evidencia",
-                "error" => $e->getMessage()
-            ], 500);
+        } else {
+
+            $ordenes = \App\Models\ordenesdetrabajo::where(
+                'usuario_IdUsuario',
+                $usuario->IdUsuario
+            )->pluck('idOrden');
+
+            $evidencias = Evidencia::whereIn(
+                'ordenes_de_trabajo_idOrden',
+                $ordenes
+            )->get();
         }
+
+        return response()->json([
+            "resultado" => "ok",
+            "datos" => $evidencias
+        ], 200);
+
+    } catch (\Exception $e) {
+
+        return response()->json([
+            "resultado" => "error",
+            "mensaje" => "No fue posible encontrar la evidencia.",
+            "error" => $e->getMessage()
+        ], 500);
     }
+}
 
     public function store(Request $request)
     {

@@ -17,35 +17,35 @@ class HistorialSeeder extends Seeder
             'id_orden' => 1,
             'estado' => 'terminado',
             'fecha' => '2026-03-07',
-            'observaiones' => 'Exelente trabajo',
+            'observaciones' => 'Exelente trabajo',
             'usuario_IdUsuario' => 1
         ]);
         historial::create([
             'id_orden' => 2,
             'estado' => 'terminado',
             'fecha' => '2026-03-07',
-            'observaiones' => 'Bien, pero conpletar en menor tiempo',
+            'observaciones' => 'Bien, pero conpletar en menor tiempo',
             'usuario_IdUsuario' => 2
         ]);
         historial::create([
             'id_orden' => 3,
             'estado' => 'terminado',
             'fecha' => '2026-03-07',
-            'observaiones' => 'ok, pero buscar una mejor solucion',
+            'observaciones' => 'ok, pero buscar una mejor solucion',
             'usuario_IdUsuario' => 3
         ]);
         historial::create([
             'id_orden' => 1,
             'estado' => 'terminado',
             'fecha' => '2026-03-07',
-            'observaiones' => 'Ok',
+            'observaciones' => 'Ok',
             'usuario_IdUsuario' => 1
         ]);
         historial::create([
             'id_orden' => 2,
             'estado' => 'terminado',
             'fecha' => '2026-03-07',
-            'observaiones' => 'Se recomienda una revision a futuro',
+            'observaciones' => 'Se recomienda una revision a futuro',
             'usuario_IdUsuario' => 2
         ]);
     }

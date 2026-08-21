@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\reporte;
 
-
 class reportecontroller extends Controller
 {
+    
 
     public function index()
     {
@@ -19,6 +19,7 @@ class reportecontroller extends Controller
 
         return response()->json($reportes);
     }
+
 
 
     public function show($id)
@@ -33,22 +34,31 @@ class reportecontroller extends Controller
     }
 
 
+    
+
     public function store(Request $request)
     {
+        $usuario = $request->user();
+
         $request->validate([
             'Tipo' => 'required|string|max:50',
             'fecha_registro' => 'required|date',
-            'usuario_IdUsuario' => 'required|integer',
-            'habitaciones_No_habitacion' => 'required|integer',
-            'ambientes_id_ambiente' => 'required|integer',
+            'habitaciones_No_habitacion' => 'required|integer|exists:habitaciones,No_habitacion',
+            'ambientes_id_ambiente' => 'required|integer|exists:ambientes,id_ambiente',
         ]);
 
         $reporte = reporte::create([
             'Tipo' => $request->Tipo,
             'fecha_registro' => $request->fecha_registro,
-            'usuario_IdUsuario' => $request->usuario_IdUsuario,
-            'habitaciones_No_habitacion' => $request->habitaciones_No_habitacion,
-            'ambientes_id_ambiente' => $request->ambientes_id_ambiente,
+
+            // Usuario autenticado
+            'usuario_IdUsuario' => $usuario->IdUsuario,
+
+            'habitaciones_No_habitacion' =>
+                $request->habitaciones_No_habitacion,
+
+            'ambientes_id_ambiente' =>
+                $request->ambientes_id_ambiente,
         ]);
 
         return response()->json([
@@ -58,6 +68,7 @@ class reportecontroller extends Controller
     }
 
 
+
     public function update(Request $request, $id)
     {
         $reporte = reporte::findOrFail($id);
@@ -65,9 +76,9 @@ class reportecontroller extends Controller
         $request->validate([
             'Tipo' => 'required|string|max:50',
             'fecha_registro' => 'required|date',
-            'usuario_IdUsuario' => 'required|integer',
-            'habitaciones_No_habitacion' => 'required|integer',
-            'ambientes_id_ambiente' => 'required|integer',
+            'usuario_IdUsuario' => 'required|integer|exists:usuarios,IdUsuario',
+            'habitaciones_No_habitacion' => 'required|integer|exists:habitaciones,No_habitacion',
+            'ambientes_id_ambiente' => 'required|integer|exists:ambientes,id_ambiente',
         ]);
 
         $reporte->update([
@@ -83,6 +94,7 @@ class reportecontroller extends Controller
             'reporte' => $reporte
         ]);
     }
+
 
 
     public function destroy($id)

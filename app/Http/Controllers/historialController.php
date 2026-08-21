@@ -7,48 +7,58 @@ use Illuminate\Http\Request;
 
 class historialController extends Controller
 {
-    public function index()
-    {
-        try {
+public function index(Request $request)
+{
+    try {
+
+        $usuario = $request->user();
+
+        $usuario->load('rol');
+
+        if (!$usuario->rol) {
+            return response()->json([
+                "resultado" => "error",
+                "mensaje" => "El usuario no tiene un rol asignado."
+            ], 403);
+        }
+
+        $idRol = $usuario->rol->IdRol;
+
+        
+        if ($idRol == 1 || $idRol == 2) {
+
             $historial = historial::all();
 
-            return response()->json([
-                "resultado" => "ok",
-                "datos" => $historial
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                "resultado" => "error",
-                "mensaje" => "No fue posible encontrar el historial.",
-                "error" => $e->getMessage()
-            ], 500);
-        }
-    }
+        
+        } elseif ($idRol == 3) {
 
-    public function store(Request $request)
-    {
-        try {
-            $historial = historial::create([
-                'id_orden' => $request->id_orden,
-                'estado' => $request->estado,
-                'fecha' => $request->fecha,
-                'observaciones' => $request->observaciones,
-                'usuario_IdUsuario' => $request->usuario_IdUsuario
-            ]);
+            $historial = historial::where(
+                'usuario_IdUsuario',
+                $usuario->IdUsuario
+            )->get();
+
+        } else {
 
             return response()->json([
-                "resultado" => "ok",
-                "mensaje" => "El historial se a registrado correctamente.",
-                "datos" => $historial
-            ], 201);
-        } catch (\Exception $e) {
-            return response()->json([
                 "resultado" => "error",
-                "mensaje" => "No fue posible registrar el historial.",
-                "habitacion" => $e->getMessage()
-            ], 500);
+                "mensaje" => "Rol no autorizado."
+            ], 403);
         }
+
+        return response()->json([
+            "resultado" => "ok",
+            "datos" => $historial
+        ], 200);
+
+    } catch (\Exception $e) {
+
+        return response()->json([
+            "resultado" => "error",
+            "mensaje" => "No fue posible encontrar el historial.",
+            "error" => $e->getMessage()
+        ], 500);
     }
+}
 
     public function show($id)
     {
