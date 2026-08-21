@@ -12,7 +12,7 @@ class Evidencia extends Model
         "ruta_archivo",
         "observaciones",
         "ordenes_de_trabajo_idOrden",
-        "evalucion_idEvalucion"
+        "evaluacion_idEvalucion"
     ];
 
     public $table = "evidencia";
