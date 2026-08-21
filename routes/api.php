@@ -1,4 +1,3 @@
-
 <?php
 
 use App\Http\Controllers\evaluacioncontroller;
@@ -21,7 +20,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    
+
 
     Route::get('/informacion-por-rol', [
         InformacionRolController::class,
@@ -95,12 +94,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 
-   Route::middleware('role:administrador,supervisor,operario')->group(function () {
+    Route::middleware('role:administrador,supervisor,operario')->group(function () {
 
         Route::get('/ordenes', [
             ordenesdetrabajocontroller::class,
             'index'
-       ]);
+        ]);
 
 
         Route::get('/ordenes/{id}', [
@@ -111,16 +110,16 @@ Route::middleware('auth:sanctum')->group(function () {
 
     });
 
-     Route::middleware('role:administrador,supervisor')->group(function () {
-        
-         Route::get('/ordenes/{id}', [
+    Route::middleware('role:administrador,supervisor')->group(function () {
+
+        Route::get('/ordenes/{id}', [
             ordenesdetrabajocontroller::class,
             'store'
         ]);
 
 
 
-         Route::put('/ordenes/{id}', [
+        Route::put('/ordenes/{id}', [
             ordenesdetrabajocontroller::class,
             'update'
         ]);
@@ -130,10 +129,10 @@ Route::middleware('auth:sanctum')->group(function () {
             'destroy'
         ]);
 
-      });
+    });
 
 
-    
+
     Route::middleware('role:administrador,supervisor')->group(function () {
 
         Route::get('/reportes', [
@@ -157,7 +156,7 @@ Route::middleware('auth:sanctum')->group(function () {
         ]);
     });
 
-    
+
 
     Route::middleware('role:administrador,supervisor,operario')->group(function () {
 
@@ -168,7 +167,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
 
-    
+
 
     Route::middleware('role:administrador,supervisor,operario')->group(function () {
 
@@ -186,13 +185,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::middleware('role:administrador,supervisor')->group(function () {
-        
+
         Route::post('/evaluacion', [
             evaluacioncontroller::class,
             'store'
         ]);
 
-       Route::put('/evaluacion/{id}', [
+        Route::put('/evaluacion/{id}', [
             evaluacioncontroller::class,
             'update'
         ]);
@@ -282,19 +281,19 @@ Route::middleware('auth:sanctum')->group(function () {
             EvidenciaController::class,
             'show'
         ]);
-        
+
         Route::post('/evidencias', [
             EvidenciaController::class,
             'store'
         ]);
 
-      
+
     });
 
-   
+
 
     Route::middleware('role:administrador,supervisor')->group(function () {
-        
+
 
         Route::put('/evidencias/{id}', [
             EvidenciaController::class,
@@ -323,19 +322,19 @@ Route::middleware('auth:sanctum')->group(function () {
             'show'
         ]);
 
-       
+
     });
 
-    
+
 
     Route::middleware('role:administrador,supervisor')->group(function () {
 
-         Route::post('/historial', [
+        Route::post('/historial', [
             historialController::class,
             'store'
         ]);
 
-         Route::put('/historial/{id}', [
+        Route::put('/historial/{id}', [
             historialController::class,
             'update'
         ]);
@@ -347,7 +346,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
 
-    
+
 
     Route::post('/logout', [
         AuthController::class,
