@@ -7,23 +7,67 @@ use App\Models\habitaciones;
 
 class habitacionesController extends Controller
 {
-    public function index()
-    {
-        try {
-            $habitacion = habitaciones::all();
+public function index(Request $request)
+{
+    try {
 
-            return response()->json([
-                "resultado" => "ok",
-                "datos" => $habitacion
-            ], 200);
-        } catch (\Exception $e) {
+        $usuario = $request->user();
+
+        $usuario->load('rol');
+
+        if (!$usuario->rol) {
             return response()->json([
                 "resultado" => "error",
-                "mensaje" => "No fue posible encontrar la habitacion.",
-                "error" => $e->getMessage()
-            ], 500);
+                "mensaje" => "El usuario no tiene un rol asignado."
+            ], 403);
         }
+
+        $idRol = (int) $usuario->rol->IdRol;
+
+        
+        if ($idRol === 1 || $idRol === 2) {
+
+            $habitaciones = habitaciones::all();
+
+        
+        } elseif ($idRol === 3) {
+
+            $habitacionesIds = \App\Models\ordenesdetrabajo::where(
+                'usuario_IdUsuario',
+                $usuario->IdUsuario
+            )
+            ->pluck('habitaciones_No_habitacion')
+            ->unique()
+            ->filter()
+            ->values();
+
+            $habitaciones = habitaciones::whereIn(
+                'No_habitacion',
+                $habitacionesIds
+            )->get();
+
+        } else {
+
+            return response()->json([
+                "resultado" => "error",
+                "mensaje" => "Rol no autorizado."
+            ], 403);
+        }
+
+        return response()->json([
+            "resultado" => "ok",
+            "datos" => $habitaciones
+        ], 200);
+
+    } catch (\Exception $e) {
+
+        return response()->json([
+            "resultado" => "error",
+            "mensaje" => "No fue posible encontrar las habitaciones.",
+            "error" => $e->getMessage()
+        ], 500);
     }
+}
 
     public function store(Request $request)
     {

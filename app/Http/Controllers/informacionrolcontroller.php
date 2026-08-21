@@ -12,38 +12,17 @@ use App\Models\historial;
 use App\Models\ordenesdetrabajo;
 use App\Models\reporte;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class InformacionRolController extends Controller
 {
     public function informacionPorRol(Request $request)
     {
-        $request->validate([
-            'Correo' => 'required|email',
-            'Contrasena' => 'required'
-        ]);
+        
+        $usuario = $request->user();
 
         
-        $usuario = usuario::with('rol')
-            ->where('Correo', $request->Correo)
-            ->first();
+        $usuario->load('rol');
 
-        if (!$usuario) {
-            return response()->json([
-                'resultado' => 'error',
-                'mensaje' => 'Correo o contraseña incorrectos.'
-            ], 401);
-        }
-
-        
-        if (!Hash::check($request->Contrasena, $usuario->Contrasena)) {
-            return response()->json([
-                'resultado' => 'error',
-                'mensaje' => 'Correo o contraseña incorrectos.'
-            ], 401);
-        }
-
-        
         if (!$usuario->rol) {
             return response()->json([
                 'resultado' => 'error',
@@ -53,13 +32,14 @@ class InformacionRolController extends Controller
 
         $rol = strtolower(trim($usuario->rol->Nombre));
 
-        
+    
 
         if ($rol === 'administrador') {
 
             return response()->json([
                 'resultado' => 'ok',
                 'rol' => 'Administrador',
+
                 'usuario' => [
                     'IdUsuario' => $usuario->IdUsuario,
                     'Nombre' => $usuario->Nombre,
@@ -99,13 +79,14 @@ class InformacionRolController extends Controller
             ], 200);
         }
 
-        
+       
 
         if ($rol === 'supervisor') {
 
             return response()->json([
                 'resultado' => 'ok',
                 'rol' => 'Supervisor',
+
                 'usuario' => [
                     'IdUsuario' => $usuario->IdUsuario,
                     'Nombre' => $usuario->Nombre,
@@ -142,10 +123,8 @@ class InformacionRolController extends Controller
         }
 
        
-
         if ($rol === 'operario') {
 
-            
             $ordenes = ordenesdetrabajo::with([
                 'reporte',
                 'ambiente',
@@ -154,20 +133,17 @@ class InformacionRolController extends Controller
             ->where('usuario_IdUsuario', $usuario->IdUsuario)
             ->get();
 
-            
             $idsOrdenes = $ordenes
                 ->pluck('idOrden')
                 ->filter()
                 ->unique()
                 ->toArray();
 
-            
             $evidencias = Evidencia::whereIn(
                 'ordenes_de_trabajo_idOrden',
                 $idsOrdenes
             )->get();
 
-            
             $idsHabitaciones = $ordenes
                 ->pluck('habitaciones_No_habitacion')
                 ->filter()
@@ -179,13 +155,11 @@ class InformacionRolController extends Controller
                 $idsHabitaciones
             )->get();
 
-            
             $historialOperario = historial::where(
                 'usuario_IdUsuario',
                 $usuario->IdUsuario
             )->get();
 
-           
             $idsEvaluaciones = $evidencias
                 ->pluck('evalucion_idEvalucion')
                 ->filter()

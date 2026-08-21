@@ -26,7 +26,7 @@ class AuthController extends Controller
             ], 401);
         }
 
-        if (!Hash::check($request->Contrasena, $usuario->Contrasena)) {
+        if (!Hash::check($request->Contrasena, $usuario->contrasena)) {
             return response()->json([
                 'resultado' => 'error',
                 'mensaje' => 'Correo o contraseña incorrectos.'
@@ -40,19 +40,36 @@ class AuthController extends Controller
             ], 403);
         }
 
+       
+        $token = $usuario->createToken('api-token')->plainTextToken;
+
         return response()->json([
             'resultado' => 'ok',
             'mensaje' => 'Inicio de sesión correcto.',
+
+            'token' => $token,
+
             'usuario' => [
                 'IdUsuario' => $usuario->IdUsuario,
                 'Nombre' => $usuario->Nombre,
                 'Apellidos' => $usuario->Apellidos,
                 'Correo' => $usuario->Correo
             ],
+
             'rol' => [
                 'IdRol' => $usuario->rol->IdRol,
-                'Nombre' => $usuario->rol->Nombre
+                'Nombre' => $usuario->rol->nombre
             ]
+        ], 200);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'resultado' => 'ok',
+            'mensaje' => 'Sesión cerrada correctamente.'
         ], 200);
     }
 }

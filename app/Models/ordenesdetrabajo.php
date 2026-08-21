@@ -32,9 +32,9 @@ class ordenesdetrabajo extends Model
         return $this->belongsTo(ambiente::class,'ambientes_id_ambiente','id_ambiente');
     }
 
-    public function habitacion()
+    public function habitaciones()
     {
-        return $this->belongsTo(habitacion::class,'habitaciones_No_habitacion','No_habitacion');
+        return $this->belongsTo(habitaciones::class,'habitaciones_No_habitacion','No_habitacion');
     }
 
     public function usuario()

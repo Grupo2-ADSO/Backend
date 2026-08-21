@@ -1,16 +1,22 @@
 <?php
-  
+
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-class usuario extends Model
+class usuario extends Authenticatable
 {
-    public $table = 'usuarios';
+    use HasApiTokens, Notifiable;
+
+    protected $table = 'usuarios';
 
     protected $primaryKey = 'IdUsuario';
 
-    public $fillable = [
+    public $timestamps = false;
+
+    protected $fillable = [
         'Nombre',
         'Apellidos',
         'Correo',
@@ -21,13 +27,21 @@ class usuario extends Model
         'Rol_IdRol'
     ];
 
-    public $timestamps = false;
+    protected $hidden = [
+        'Contrasena',
+    ];
 
-     protected $hidden = [ 'Contrasena'];
+    public function getAuthPassword()
+    {
+        return $this->Contrasena;
+    }
 
     public function rol()
     {
-        return $this->belongsTo(rol::class, 'Rol_IdRol', 'IdRol');
+        return $this->belongsTo(
+            rol::class,
+            'Rol_IdRol',
+            'IdRol'
+        );
     }
 }
-          

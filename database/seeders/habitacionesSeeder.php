@@ -7,7 +7,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\habitaciones;
 
-class habitacionesSeeder extends Seeder
+class HabitacionesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
