@@ -12,7 +12,7 @@ class ordenesdetrabajo extends Model
 
     public $timestamps = false;
 
-    protected $fillable = [
+    public $fillable = [
         'descripcion',
         'prioridad',
         'fecha_creacion',
@@ -24,21 +24,21 @@ class ordenesdetrabajo extends Model
 
     public function reporte()
     {
-        return $this->belongsTo(reporte::class,'reportes_IdReporte','IdReporte');
+        return $this->belongsTo(reporte::class, 'reportes_IdReporte', 'IdReporte');
     }
 
     public function ambiente()
     {
-        return $this->belongsTo(ambiente::class,'ambientes_id_ambiente','id_ambiente');
+        return $this->belongsTo(ambiente::class, 'ambientes_id_ambiente', 'id_ambiente');
     }
 
     public function habitaciones()
     {
-        return $this->belongsTo(habitaciones::class,'habitaciones_No_habitacion','No_habitacion');
+        return $this->belongsTo(habitaciones::class, 'habitaciones_No_habitacion', 'No_habitacion');
     }
 
     public function usuario()
     {
-        return $this->belongsTo(usuario::class,'usuario_IdUsuario','IdUsuario');
+        return $this->belongsTo(usuario::class, 'usuario_IdUsuario', 'IdUsuario');
     }
 }

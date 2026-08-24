@@ -8,63 +8,62 @@ use Illuminate\Support\Facades\Storage;
 
 class EvidenciaController extends Controller
 {
-public function index(Request $request)
-{
-    try {
+    public function index(Request $request)
+    {
+        try {
 
-        $usuario = $request->user();
+            $usuario = $request->user();
 
-        $usuario->load('rol');
+            $usuario->load('rol');
 
-        if (!$usuario->rol) {
+            if (!$usuario->rol) {
+                return response()->json([
+                    "resultado" => "error",
+                    "mensaje" => "El usuario no tiene un rol asignado."
+                ], 403);
+            }
+
+            $idRol = (int) $usuario->rol->IdRol;
+
+            if ($idRol === 1 || $idRol === 2) {
+
+                $evidencias = Evidencia::all();
+
+
+            } elseif ($idRol === 3) {
+
+                $ordenes = \App\Models\ordenesdetrabajo::where(
+                    'usuario_IdUsuario',
+                    $usuario->IdUsuario
+                )->pluck('idOrden');
+
+                $evidencias = Evidencia::whereIn(
+                    'ordenes_de_trabajo_idOrden',
+                    $ordenes
+                )->get();
+
+            } else {
+
+                return response()->json([
+                    "resultado" => "error",
+                    "mensaje" => "Rol no autorizado."
+                ], 403);
+            }
+
+            return response()->json([
+                "resultado" => "ok",
+                "datos" => $evidencias
+            ], 200);
+
+        } catch (\Exception $e) {
+
             return response()->json([
                 "resultado" => "error",
-                "mensaje" => "El usuario no tiene un rol asignado."
-            ], 403);
+                "mensaje" => "No fue posible encontrar las evidencias.",
+                "error" => $e->getMessage()
+            ], 500);
         }
-
-        $idRol = (int) $usuario->rol->IdRol;
-
-        // Administrador y Supervisor: todas las evidencias
-        if ($idRol === 1 || $idRol === 2) {
-
-            $evidencias = Evidencia::all();
-
-        // Operario: solo evidencias de sus órdenes
-        } elseif ($idRol === 3) {
-
-            $ordenes = \App\Models\ordenesdetrabajo::where(
-                'usuario_IdUsuario',
-                $usuario->IdUsuario
-            )->pluck('idOrden');
-
-            $evidencias = Evidencia::whereIn(
-                'ordenes_de_trabajo_idOrden',
-                $ordenes
-            )->get();
-
-        } else {
-
-            return response()->json([
-                "resultado" => "error",
-                "mensaje" => "Rol no autorizado."
-            ], 403);
-        }
-
-        return response()->json([
-            "resultado" => "ok",
-            "datos" => $evidencias
-        ], 200);
-
-    } catch (\Exception $e) {
-
-        return response()->json([
-            "resultado" => "error",
-            "mensaje" => "No fue posible encontrar las evidencias.",
-            "error" => $e->getMessage()
-        ], 500);
     }
-}
 
     public function store(Request $request)
     {

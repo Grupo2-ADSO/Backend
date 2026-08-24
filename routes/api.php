@@ -112,7 +112,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::middleware('role:administrador,supervisor')->group(function () {
 
-        Route::get('/ordenes/{id}', [
+        Route::post('/ordenes', [
             ordenesdetrabajocontroller::class,
             'store'
         ]);
