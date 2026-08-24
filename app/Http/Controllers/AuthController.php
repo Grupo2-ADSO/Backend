@@ -26,7 +26,7 @@ class AuthController extends Controller
             ], 401);
         }
 
-        if (!Hash::check($request->Contrasena, $usuario->contrasena)) {
+        if (!Hash::check($request->Contrasena, $usuario->Contrasena)) {
             return response()->json([
                 'resultado' => 'error',
                 'mensaje' => 'Correo o contraseña incorrectos.'
@@ -40,7 +40,7 @@ class AuthController extends Controller
             ], 403);
         }
 
-       
+
         $token = $usuario->createToken('api-token')->plainTextToken;
 
         return response()->json([
@@ -58,7 +58,7 @@ class AuthController extends Controller
 
             'rol' => [
                 'IdRol' => $usuario->rol->IdRol,
-                'Nombre' => $usuario->rol->nombre
+                'Nombre' => $usuario->rol->Nombre
             ]
         ], 200);
     }
