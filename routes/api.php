@@ -267,17 +267,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::middleware('role:administrador,supervisor,operario')->group(function () {
 
-        Route::get('/evidencias', [
-            EvidenciaController::class,
-            'index'
-        ]);
-
-
-        Route::get('/evidencias/{id}', [
-            EvidenciaController::class,
-            'show'
-        ]);
-
+        
         Route::post('/evidencias', [
             EvidenciaController::class,
             'store'
@@ -290,6 +280,16 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::middleware('role:administrador,supervisor')->group(function () {
 
+         Route::get('/evidencias', [
+            EvidenciaController::class,
+            'index'
+        ]);
+
+
+        Route::get('/evidencias/{id}', [
+            EvidenciaController::class,
+            'show'
+        ]);
 
         Route::put('/evidencias/{id}', [
             EvidenciaController::class,
