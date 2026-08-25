@@ -24,7 +24,7 @@ class ordenesdetrabajocontroller extends Controller
         $idRol = $usuario->rol->IdRol;
 
         $consulta = ordenesdetrabajo::with([
-            'usuario',
+            'usuario:IdUsuario,Nombre,Apellidos,Rol_IdRol',
             'reporte',
             'ambiente',
             'habitaciones'
@@ -66,7 +66,7 @@ class ordenesdetrabajocontroller extends Controller
         $rol = strtolower(trim($usuario->rol->Nombre));
 
         $orden = ordenesdetrabajo::with([
-            'usuario',
+            'usuario:IdUsuario,Nombre,Apellidos,Rol_IdRol',
             'reporte',
             'ambiente',
             'habitaciones'
@@ -105,7 +105,6 @@ class ordenesdetrabajocontroller extends Controller
         $request->validate([
             'descripcion' => 'required|string|max:200',
             'prioridad' => 'required|in:alta,media,baja',
-            'fecha_creacion' => 'required|date',
 
             'reportes_IdReporte' =>
                 'required|integer|exists:reportes,IdReporte',
@@ -123,7 +122,7 @@ class ordenesdetrabajocontroller extends Controller
         $orden = ordenesdetrabajo::create([
             'descripcion' => $request->descripcion,
             'prioridad' => $request->prioridad,
-            'fecha_creacion' => $request->fecha_creacion,
+            'fecha_creacion' => now(),
             'reportes_IdReporte' => $request->reportes_IdReporte,
             'ambientes_id_ambiente' => $request->ambientes_id_ambiente,
             'habitaciones_No_habitacion' => $request->habitaciones_No_habitacion,

@@ -28,7 +28,7 @@ class usuario extends Authenticatable
     ];
 
     protected $hidden = [
-        'Contrasena',
+        'contrasena',
     ];
 
     public function getAuthPassword()

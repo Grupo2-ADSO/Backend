@@ -19,7 +19,6 @@ return new class extends Migration {
             $table->enum('Estado', ['Activo', 'Inactivo'])->default('Activo');
             $table->string('Cedula', 11)->unique();
             $table->string('Telefono', 11)->nullable();
-            $table->unsignedBigInteger('Rol_IdRol');
             $table->foreignId('Rol_IdRol')->constrained('rols', 'IdRol');
         });
     }
