@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/hora', function () {
-    Config::set('app.timezone', 'America/Bogota');
-    return response()->json(['hora' => now()]);
+    //return config('app.timezone');
+    return now();
 });
 
 
