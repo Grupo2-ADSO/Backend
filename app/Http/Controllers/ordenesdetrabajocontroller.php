@@ -30,12 +30,12 @@ class ordenesdetrabajocontroller extends Controller
             'habitaciones'
         ]);
 
-        // Administrador y Supervisor
+
         if ($idRol == 1 || $idRol == 2) {
 
             $ordenes = $consulta->get();
 
-            // Operario
+
         } elseif ($idRol == 3) {
 
             $ordenes = $consulta
