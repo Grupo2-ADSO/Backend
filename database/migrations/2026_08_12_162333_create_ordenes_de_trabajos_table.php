@@ -16,8 +16,8 @@ return new class extends Migration {
             $table->enum('prioridad', ['alta', 'media', 'baja']);
             $table->dateTime('fecha_creacion');
             $table->foreignId('reportes_IdReporte')->constrained('reportes', 'IdReporte');
-            $table->foreignId('ambientes_id_ambiente')->constrained('ambientes', 'id_ambiente');
-            $table->integer('habitaciones_No_habitacion');
+            $table->foreignId('ambientes_id_ambiente')->nullable()->constrained('ambientes', 'id_ambiente');
+            $table->integer('habitaciones_No_habitacion')->nullable();
             $table->foreign('habitaciones_No_habitacion')
                 ->references('No_habitacion')
                 ->on('habitaciones');

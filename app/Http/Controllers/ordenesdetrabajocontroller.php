@@ -109,15 +109,31 @@ class ordenesdetrabajocontroller extends Controller
             'reportes_IdReporte' =>
                 'required|integer|exists:reportes,IdReporte',
 
-            'ambientes_id_ambiente' =>
-                'required|integer|exists:ambientes,id_ambiente',
+            'ambientes_id_ambiente' => [
+                'nullable',
+                'integer',
+                'exists:ambientes,id_ambiente',
+                'required_without:habitaciones_No_habitacion'
+            ],
 
-            'habitaciones_No_habitacion' =>
-                'required|integer|exists:habitaciones,No_habitacion',
+            'habitaciones_No_habitacion' => [
+                'nullable',
+                'integer',
+                'exists:habitaciones,No_habitacion',
+                'required_without:ambientes_id_ambiente'
+            ],
+
 
             'usuario_IdUsuario' =>
                 'required|integer|exists:usuarios,IdUsuario',
         ]);
+
+        if ($request->ambientes_id_ambiente && $request->habitaciones_No_habitacion) {
+            return response()->json([
+                'resultado' => 'error',
+                'mensaje' => 'La orden debe pertenecer a un ambiente o a una habitacion, no a ambos.'
+            ], 422);
+        }
 
         $orden = ordenesdetrabajo::create([
             'descripcion' => $request->descripcion,
@@ -143,17 +159,32 @@ class ordenesdetrabajocontroller extends Controller
         $request->validate([
             'descripcion' => 'required|string|max:200',
             'prioridad' => 'required|in:alta,media,baja',
-            'fecha_creacion' => 'required|date',
             'reportes_IdReporte' => 'required|integer|exists:reportes,IdReporte',
-            'ambientes_id_ambiente' => 'required|integer|exists:ambientes,id_ambiente',
-            'habitaciones_No_habitacion' => 'required|integer|exists:habitaciones,No_habitacion',
+            'ambientes_id_ambiente' => [
+                'nullable',
+                'integer',
+                'exists:ambientes,id_ambiente',
+                'required_without:habitaciones_No_habitacion'
+            ],
+            'habitaciones_No_habitacion' => [
+                'nullable',
+                'integer',
+                'exists:habitaciones,No_habitacion',
+                'required_without:ambientes_id_ambiente'
+            ],
             'usuario_IdUsuario' => 'required|integer|exists:usuarios,IdUsuario',
         ]);
+
+        if ($request->ambientes_id_ambiente && $request->habitaciones_No_habitacion) {
+            return response()->json([
+                'resultado' => 'error',
+                'mensaje' => 'La orden debe pertenecer a un ambiente o a una habitacion, no a ambos.'
+            ], 422);
+        }
 
         $orden->update([
             'descripcion' => $request->descripcion,
             'prioridad' => $request->prioridad,
-            'fecha_creacion' => $request->fecha_creacion,
             'reportes_IdReporte' => $request->reportes_IdReporte,
             'ambientes_id_ambiente' => $request->ambientes_id_ambiente,
             'habitaciones_No_habitacion' => $request->habitaciones_No_habitacion,
