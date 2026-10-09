@@ -53,7 +53,9 @@ class AuthController extends Controller
                 'IdUsuario' => $usuario->IdUsuario,
                 'Nombre' => $usuario->Nombre,
                 'Apellidos' => $usuario->Apellidos,
-                'Correo' => $usuario->Correo
+                'Correo' => $usuario->Correo,
+                'Cedula' => $usuario->Cedula,
+                'Telefono' => $usuario->Telefono
             ],
 
             'rol' => [
@@ -111,6 +113,32 @@ class AuthController extends Controller
         return response()->json([
             'resultado' => 'ok',
             'mensaje' => 'Contraseña actualizado correctamente.'
+        ]);
+    }
+
+    public function cambiarTelefono(Request $request)
+    {
+        $request->validate([
+            'Contrasena' => 'required|string',
+            'Telefono' => 'required|string|max:20'
+        ]);
+
+        $usuario = $request->user();
+
+        if (!Hash::check($request->Contrasena, $usuario->contrasena)) {
+            return response()->json([
+                'resultado' => 'error',
+                'mensaje' => 'La contraseña actual es incorrecta'
+            ], 401);
+        }
+
+        $usuario->Telefono = $request->Telefono;
+        $usuario->save();
+
+        return response()->json([
+            'resultado' => 'ok',
+            'mensaje' => 'Telefono actualizado correctamente.',
+            'Telefono' => $usuario->Telefono
         ]);
     }
 
