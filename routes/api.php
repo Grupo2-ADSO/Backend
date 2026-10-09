@@ -35,7 +35,10 @@ Route::middleware('auth:sanctum')->group(function () {
         'cambiarContrasena'
     ]);
 
-
+    Route::put('/perfil/telefono', [
+        AuthController::class,
+        'cambiarTelefono'
+    ]);
 
     Route::get('/informacion-por-rol', [
         InformacionRolController::class,
