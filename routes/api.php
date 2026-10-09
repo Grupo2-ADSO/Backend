@@ -25,6 +25,16 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
 
+    Route::put('/perfil/correo', [
+        AuthController::class,
+        'cambiarCorreo'
+    ]);
+
+    Route::put('/perfil/contrasena', [
+        AuthController::class,
+        'cambiarContrasena'
+    ]);
+
 
 
     Route::get('/informacion-por-rol', [
