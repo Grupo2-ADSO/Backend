@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -140,6 +142,60 @@ class AuthController extends Controller
             'mensaje' => 'Telefono actualizado correctamente.',
             'Telefono' => $usuario->Telefono
         ]);
+    }
+
+    public function subirFotoPerfil(Request $request)
+    {
+        $request->validate([
+            'FotoPerfil' => 'required|image|mimes:jpeg,jpg,png,webp|max:2048'
+        ]);
+
+        $usuario = $request->user();
+        $usuario->load('rol');
+
+        if (!$usuario->rol) {
+            return response()->json([
+                'resultado' => 'error',
+                'mensaje' => 'El usuario no tiene un rol aisgnado.'
+            ], 403);
+        }
+
+        $rol = strtolower($usuario->rol->Nombre);
+
+        if ($rol === 'administrador') {
+            $carpeta = 'fotos-perfil/administrador';
+        } elseif ($rol === 'supervisor') {
+            $carpeta = 'fotos-perfil/supervisor';
+        } elseif ($rol === 'operario') {
+            $carpeta = 'fotos-perfil/operario';
+        } else {
+            return response()->json([
+                'resultado' => 'error',
+                'mensaje' => 'El rol del usuario no es valido.'
+            ], 403);
+        }
+
+        $fotoAnterior = $usuario->FotoPerfil;
+
+        $archivo = $request->file('FotoPerfil');
+
+        $nombreArchivo = $usuario->IdUsuario . '_' . Str::uuid()
+            . '.' . $archivo->extension();
+
+        $rutaNueva = Storage::disk('public')->putFileAs(
+            $carpeta,
+            $archivo,
+            $nombreArchivo
+        );
+
+        if (!$rutaNueva) {
+            return response()->json([
+                'resultado' => 'error',
+                'mensaje' => 'No se pudo guardar la fotografia.'
+            ], 500);
+        }
+
+        $usuario->FotoPerfil = $rutaNueva;
     }
 
     public function logout(Request $request)
