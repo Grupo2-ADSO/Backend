@@ -24,7 +24,8 @@ class usuario extends Authenticatable
         'Estado',
         'Cedula',
         'Telefono',
-        'Rol_IdRol'
+        'Rol_IdRol',
+        'FotoPerfil'
     ];
 
     protected $hidden = [

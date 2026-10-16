@@ -40,6 +40,16 @@ Route::middleware('auth:sanctum')->group(function () {
         'cambiarTelefono'
     ]);
 
+    Route::post('/perfil/foto', [
+        AuthController::class,
+        'subirFotoPerfil'
+    ]);
+
+    Route::delete('/perfil/foto', [
+        AuthController::class,
+        'eliminarFotoPerfil'
+    ]);
+
     Route::get('/informacion-por-rol', [
         InformacionRolController::class,
         'informacionPorRol'
