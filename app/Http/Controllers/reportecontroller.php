@@ -42,9 +42,25 @@ class reportecontroller extends Controller
 
         $request->validate([
             'Tipo' => 'required|string|max:50',
+
             'fecha_registro' => 'required|date',
-            'habitaciones_No_habitacion' => 'required|integer|exists:habitaciones,No_habitacion',
-            'ambientes_id_ambiente' => 'required|integer|exists:ambientes,id_ambiente',
+
+           'habitaciones_No_habitacion' => [
+                'nullable',
+                'integer',
+                'exists:habitaciones,No_habitacion',
+                'required_without:ambientes_id_ambiente'
+            ],
+
+             'ambientes_id_ambiente' => [
+                'nullable',
+                'integer',
+                'exists:ambientes,id_ambiente',
+                'required_without:habitaciones_No_habitacion'
+            ],
+
+            'usuario_IdUsuario' =>
+                'required|integer|exists:usuarios,IdUsuario',
         ]);
 
         $reporte = reporte::create([
