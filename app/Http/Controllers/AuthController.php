@@ -57,7 +57,8 @@ class AuthController extends Controller
                 'Apellidos' => $usuario->Apellidos,
                 'Correo' => $usuario->Correo,
                 'Cedula' => $usuario->Cedula,
-                'Telefono' => $usuario->Telefono
+                'Telefono' => $usuario->Telefono,
+                'FotoPerfil' => $usuario->FotoPerfil
             ],
 
             'rol' => [
@@ -156,11 +157,11 @@ class AuthController extends Controller
         if (!$usuario->rol) {
             return response()->json([
                 'resultado' => 'error',
-                'mensaje' => 'El usuario no tiene un rol aisgnado.'
+                'mensaje' => 'El usuario no tiene un rol asignado.'
             ], 403);
         }
 
-        $rol = strtolower($usuario->rol->Nombre);
+        $rol = strtolower($usuario->rol->nombre);
 
         if ($rol === 'administrador') {
             $carpeta = 'fotos-perfil/administrador';
@@ -171,7 +172,7 @@ class AuthController extends Controller
         } else {
             return response()->json([
                 'resultado' => 'error',
-                'mensaje' => 'El rol del usuario no es valido.'
+                'mensaje' => 'El rol del usuario no es válido.'
             ], 403);
         }
 
@@ -196,6 +197,51 @@ class AuthController extends Controller
         }
 
         $usuario->FotoPerfil = $rutaNueva;
+        $usuario->save();
+
+        if (
+            $fotoAnterior &&
+            Str::startsWith($fotoAnterior, [
+                'fotos-perfil/administrador/',
+                'fotos-perfil/supervisor/',
+                'fotos-perfil/operario/'
+            ])
+        ) {
+            Storage::disk('public')->delete($fotoAnterior);
+        }
+
+        return response()->json([
+            'resultado' => 'ok',
+            'mensaje' => 'Foto de perfil actualizada correctamente.',
+            'FotoPerfil' => $usuario->FotoPerfil
+        ]);
+    }
+
+    public function eliminarFotoPerfil(Request $request)
+    {
+        $usuario = $request->user();
+
+        $fotoAnterior = $usuario->FotoPerfil;
+
+        $usuario->FotoPerfil = null;
+        $usuario->save();
+
+        if (
+            $fotoAnterior &&
+            Str::startsWith($fotoAnterior, [
+                'fotos-perfil/administrador/',
+                'fotos-perfil/supervisor/',
+                'fotos-perfil/operario/'
+            ])
+        ) {
+            Storage::disk('public')->delete($fotoAnterior);
+        }
+
+        return response()->json([
+            'resultado' => 'ok',
+            'mensaje' => 'Foto de perfil eliminada correctamente.',
+            'FotoPerfil' => null
+        ]);
     }
 
     public function logout(Request $request)
