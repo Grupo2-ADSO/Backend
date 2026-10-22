@@ -67,7 +67,7 @@ class reportecontroller extends Controller
             'Tipo' => $request->Tipo,
             'fecha_registro' => $request->fecha_registro,
 
-            // Usuario autenticado
+   
             'usuario_IdUsuario' => $usuario->IdUsuario,
 
             'habitaciones_No_habitacion' =>
@@ -89,12 +89,27 @@ class reportecontroller extends Controller
     {
         $reporte = reporte::findOrFail($id);
 
-        $request->validate([
+       $request->validate([
             'Tipo' => 'required|string|max:50',
+
             'fecha_registro' => 'required|date',
-            'usuario_IdUsuario' => 'required|integer|exists:usuarios,IdUsuario',
-            'habitaciones_No_habitacion' => 'required|integer|exists:habitaciones,No_habitacion',
-            'ambientes_id_ambiente' => 'required|integer|exists:ambientes,id_ambiente',
+
+           'habitaciones_No_habitacion' => [
+                'nullable',
+                'integer',
+                'exists:habitaciones,No_habitacion',
+                'required_without:ambientes_id_ambiente'
+            ],
+
+             'ambientes_id_ambiente' => [
+                'nullable',
+                'integer',
+                'exists:ambientes,id_ambiente',
+                'required_without:habitaciones_No_habitacion'
+            ],
+
+            'usuario_IdUsuario' =>
+                'required|integer|exists:usuarios,IdUsuario',
         ]);
 
         $reporte->update([

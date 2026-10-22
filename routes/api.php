@@ -55,8 +55,9 @@ Route::middleware('auth:sanctum')->group(function () {
         'informacionPorRol'
     ]);
 
+    Route::patch('/ordenes/{id}/estado', [ordenesdetrabajocontroller::class, 'cambiarEstado']);
 
-    Route::middleware('role:administrador,supervisor')->group(function () {
+    Route::middleware('role:administrador,supervisor, operario')->group(function () {
 
         Route::get('/usuario', [
             usuariocontroller::class,
@@ -138,7 +139,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     });
 
-    Route::middleware('role:administrador,supervisor')->group(function () {
+    Route::middleware('role:administrador,supervisor, operario')->group(function () {
 
         Route::post('/ordenes', [
             ordenesdetrabajocontroller::class,
@@ -161,7 +162,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 
-    Route::middleware('role:administrador,supervisor')->group(function () {
+    Route::middleware('role:administrador,supervisor, operario')->group(function () {
 
         Route::get('/reportes', [
             reportecontroller::class,
@@ -228,7 +229,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 
-    Route::middleware('role:administrador,supervisor')->group(function () {
+    Route::middleware('role:administrador,supervisor, operario')->group(function () {
 
         Route::get('/ambientes', [
             AmbienteController::class,
@@ -260,7 +261,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
 
-    Route::middleware('role:administrador,supervisor')->group(function () {
+    Route::middleware('role:administrador,supervisor, operario')->group(function () {
 
         Route::get('/habitaciones', [
             habitacionesController::class,

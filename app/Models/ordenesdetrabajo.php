@@ -20,6 +20,7 @@ class ordenesdetrabajo extends Model
         'ambientes_id_ambiente',
         'habitaciones_No_habitacion',
         'usuario_IdUsuario',
+        'estado'
     ];
 
     public function reporte()

@@ -9,10 +9,11 @@ class OrdenDeTrabajoSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('ordenes_de_trabajos')->insert([
+DB::table('ordenes_de_trabajos')->insert([
             [
                 'descripcion' => 'Revisar aire acondicionado de la habitación.',
                 'prioridad' => 'alta',
+                'estado' => 'pendiente',
                 'fecha_creacion' => '2026-08-01',
                 'reportes_IdReporte' => 1,
                 'ambientes_id_ambiente' => null,
@@ -22,6 +23,7 @@ class OrdenDeTrabajoSeeder extends Seeder
             [
                 'descripcion' => 'Realizar limpieza general del área.',
                 'prioridad' => 'media',
+                'estado' => 'terminado',
                 'fecha_creacion' => '2026-08-03',
                 'reportes_IdReporte' => 2,
                 'ambientes_id_ambiente' => 2,
@@ -31,6 +33,7 @@ class OrdenDeTrabajoSeeder extends Seeder
             [
                 'descripcion' => 'Revisar daño reportado en la habitación.',
                 'prioridad' => 'alta',
+                'estado' => 'terminado',
                 'fecha_creacion' => '2026-08-05',
                 'reportes_IdReporte' => 3,
                 'ambientes_id_ambiente' => null,
@@ -40,6 +43,7 @@ class OrdenDeTrabajoSeeder extends Seeder
             [
                 'descripcion' => 'Realizar revisión preventiva de instalaciones.',
                 'prioridad' => 'baja',
+                'estado' => 'terminado',
                 'fecha_creacion' => '2026-08-07',
                 'reportes_IdReporte' => 4,
                 'ambientes_id_ambiente' => 4,

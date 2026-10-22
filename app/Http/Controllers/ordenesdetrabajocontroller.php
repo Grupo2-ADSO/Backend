@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ordenesdetrabajo;
 
+
 class ordenesdetrabajocontroller extends Controller
 {
+    
 
     public function index(Request $request)
     {
@@ -100,32 +102,20 @@ class ordenesdetrabajocontroller extends Controller
 
 
 
-    public function store(Request $request)
+   public function store(Request $request)
     {
         $request->validate([
             'descripcion' => 'required|string|max:200',
             'prioridad' => 'required|in:alta,media,baja',
-
-            'reportes_IdReporte' =>
-                'required|integer|exists:reportes,IdReporte',
-
+            'estado' => 'required|in:en proceso,pendiente,terminado',
+            'reportes_IdReporte' => 'required|integer|exists:reportes,IdReporte',
             'ambientes_id_ambiente' => [
-                'nullable',
-                'integer',
-                'exists:ambientes,id_ambiente',
-                'required_without:habitaciones_No_habitacion'
+                'nullable', 'integer', 'exists:ambientes,id_ambiente', 'required_without:habitaciones_No_habitacion'
             ],
-
             'habitaciones_No_habitacion' => [
-                'nullable',
-                'integer',
-                'exists:habitaciones,No_habitacion',
-                'required_without:ambientes_id_ambiente'
+                'nullable', 'integer', 'exists:habitaciones,No_habitacion', 'required_without:ambientes_id_ambiente'
             ],
-
-
-            'usuario_IdUsuario' =>
-                'required|integer|exists:usuarios,IdUsuario',
+            'usuario_IdUsuario' => 'required|integer|exists:usuarios,IdUsuario',
         ]);
 
         if ($request->ambientes_id_ambiente && $request->habitaciones_No_habitacion) {
@@ -138,6 +128,7 @@ class ordenesdetrabajocontroller extends Controller
         $orden = ordenesdetrabajo::create([
             'descripcion' => $request->descripcion,
             'prioridad' => $request->prioridad,
+            'estado' => $request->estado,
             'fecha_creacion' => now(),
             'reportes_IdReporte' => $request->reportes_IdReporte,
             'ambientes_id_ambiente' => $request->ambientes_id_ambiente,
@@ -159,18 +150,13 @@ class ordenesdetrabajocontroller extends Controller
         $request->validate([
             'descripcion' => 'required|string|max:200',
             'prioridad' => 'required|in:alta,media,baja',
+            'estado' => 'required|in:en proceso,pendiente,terminado',
             'reportes_IdReporte' => 'required|integer|exists:reportes,IdReporte',
             'ambientes_id_ambiente' => [
-                'nullable',
-                'integer',
-                'exists:ambientes,id_ambiente',
-                'required_without:habitaciones_No_habitacion'
+                'nullable', 'integer', 'exists:ambientes,id_ambiente', 'required_without:habitaciones_No_habitacion'
             ],
             'habitaciones_No_habitacion' => [
-                'nullable',
-                'integer',
-                'exists:habitaciones,No_habitacion',
-                'required_without:ambientes_id_ambiente'
+                'nullable', 'integer', 'exists:habitaciones,No_habitacion', 'required_without:ambientes_id_ambiente'
             ],
             'usuario_IdUsuario' => 'required|integer|exists:usuarios,IdUsuario',
         ]);
@@ -185,6 +171,7 @@ class ordenesdetrabajocontroller extends Controller
         $orden->update([
             'descripcion' => $request->descripcion,
             'prioridad' => $request->prioridad,
+            'estado' => $request->estado, // NUEVO CAMPO
             'reportes_IdReporte' => $request->reportes_IdReporte,
             'ambientes_id_ambiente' => $request->ambientes_id_ambiente,
             'habitaciones_No_habitacion' => $request->habitaciones_No_habitacion,
@@ -208,4 +195,20 @@ class ordenesdetrabajocontroller extends Controller
             'mensaje' => 'Orden de trabajo eliminada correctamente'
         ]);
     }
+
+    public function cambiarEstado(Request $request, $id)
+{
+    $request->validate([
+        'estado' => 'required|in:en proceso,pendiente,terminado'
+    ]);
+
+    $orden = ordenesdetrabajo::findOrFail($id);
+    $orden->estado = $request->estado;
+    $orden->save();
+
+    return response()->json([
+        'mensaje' => 'Estado actualizado a: ' . $orden->estado,
+        'orden' => $orden
+    ]);
+}
 }

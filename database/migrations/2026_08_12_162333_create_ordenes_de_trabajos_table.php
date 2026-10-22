@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('descripcion', 200);
             $table->enum('prioridad', ['alta', 'media', 'baja']);
             $table->dateTime('fecha_creacion');
+            $table->enum('estado', ['en proceso', 'pendiente', 'terminado'])->default('pendiente');
             $table->foreignId('reportes_IdReporte')->constrained('reportes', 'IdReporte');
             $table->foreignId('ambientes_id_ambiente')->nullable()->constrained('ambientes', 'id_ambiente');
             $table->integer('habitaciones_No_habitacion')->nullable();
