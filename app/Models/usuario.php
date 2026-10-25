@@ -32,6 +32,13 @@ class usuario extends Authenticatable
         'contrasena',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'CorreoVerificadoEn' => 'datetime',
+        ];
+    }
+
     public function getAuthPassword()
     {
         return $this->Contrasena;

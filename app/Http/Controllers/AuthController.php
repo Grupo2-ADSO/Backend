@@ -123,7 +123,7 @@ class AuthController extends Controller
     {
         $request->validate([
             'Contrasena' => 'required|string',
-            'Telefono' => 'required|string|max:20'
+            'Telefono' => ['required', 'regex:/^[0-9]{10}$/'],
         ]);
 
         $usuario = $request->user();
