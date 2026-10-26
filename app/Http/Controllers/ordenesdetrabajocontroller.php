@@ -9,50 +9,50 @@ class ordenesdetrabajocontroller extends Controller
 {
 
     public function index(Request $request)
-{
-    $usuario = $request->user();
+    {
+        $usuario = $request->user();
 
-    $usuario->load('rol');
+        $usuario->load('rol');
 
-    if (!$usuario->rol) {
+        if (!$usuario->rol) {
+            return response()->json([
+                'resultado' => 'error',
+                'mensaje' => 'El usuario no tiene un rol asignado.'
+            ], 403);
+        }
+
+        $idRol = $usuario->rol->IdRol;
+
+        $consulta = ordenesdetrabajo::with([
+            'usuario',
+            'reporte',
+            'ambiente',
+            'habitaciones'
+        ]);
+
+        if ($idRol == 1 || $idRol == 2) {
+
+            $ordenes = $consulta->get();
+
+        } elseif ($idRol == 3) {
+
+            $ordenes = $consulta
+                ->where('usuario_IdUsuario', $usuario->IdUsuario)
+                ->get();
+
+        } else {
+
+            return response()->json([
+                'resultado' => 'error',
+                'mensaje' => 'Rol no autorizado.'
+            ], 403);
+        }
+
         return response()->json([
-            'resultado' => 'error',
-            'mensaje' => 'El usuario no tiene un rol asignado.'
-        ], 403);
+            'resultado' => 'ok',
+            'datos' => $ordenes
+        ], 200);
     }
-
-    $idRol = $usuario->rol->IdRol;
-
-    $consulta = ordenesdetrabajo::with([
-        'usuario',
-        'reporte',
-        'ambiente',
-        'habitaciones'
-    ]);
-
-    if ($idRol == 1 || $idRol == 2) {
-
-        $ordenes = $consulta->get();
-
-    } elseif ($idRol == 3) {
-
-        $ordenes = $consulta
-            ->where('usuario_IdUsuario', $usuario->IdUsuario)
-            ->get();
-
-    } else {
-
-        return response()->json([
-            'resultado' => 'error',
-            'mensaje' => 'Rol no autorizado.'
-        ], 403);
-    }
-
-    return response()->json([
-        'resultado' => 'ok',
-        'datos' => $ordenes
-    ], 200);
-}
 
 
     public function show(Request $request, $id)
@@ -77,7 +77,7 @@ class ordenesdetrabajocontroller extends Controller
             ], 404);
         }
 
-    
+
 
         if (
             $rol === 'operario' &&
@@ -175,5 +175,14 @@ class ordenesdetrabajocontroller extends Controller
         return response()->json([
             'mensaje' => 'Orden de trabajo eliminada correctamente'
         ]);
+    }
+
+    public function ordenesEnProcesoPorUsuario($usuario_id)
+    {
+        $ordenes = OrdenTrabajo::where('usuario_id', $usuario_id)
+            ->where('estado', 'en proceso')
+            ->get();
+
+        return response()->json($ordenes);
     }
 }
