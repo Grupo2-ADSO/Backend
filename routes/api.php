@@ -14,21 +14,50 @@ use App\Http\Controllers\habitacionesController;
 use Illuminate\Support\Facades\Route;
 
 
+Route::get('/hora', function () {
+    //return config('app.timezone');
+    return now();
+});
+
 
 Route::post('/login', [AuthController::class, 'login']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
 
+    Route::put('/perfil/correo', [
+        AuthController::class,
+        'cambiarCorreo'
+    ]);
 
+    Route::put('/perfil/contrasena', [
+        AuthController::class,
+        'cambiarContrasena'
+    ]);
+
+    Route::put('/perfil/telefono', [
+        AuthController::class,
+        'cambiarTelefono'
+    ]);
+
+    Route::post('/perfil/foto', [
+        AuthController::class,
+        'subirFotoPerfil'
+    ]);
+
+    Route::delete('/perfil/foto', [
+        AuthController::class,
+        'eliminarFotoPerfil'
+    ]);
 
     Route::get('/informacion-por-rol', [
         InformacionRolController::class,
         'informacionPorRol'
     ]);
 
+    Route::patch('/ordenes/{id}/estado', [ordenesdetrabajocontroller::class, 'cambiarEstado']);
 
-    Route::middleware('role:administrador,supervisor')->group(function () {
+    Route::middleware('role:administrador,supervisor, operario')->group(function () {
 
         Route::get('/usuario', [
             usuariocontroller::class,
@@ -110,9 +139,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     });
 
-    Route::middleware('role:administrador,supervisor')->group(function () {
+    Route::middleware('role:administrador,supervisor, operario')->group(function () {
 
-        Route::get('/ordenes/{id}', [
+        Route::post('/ordenes', [
             ordenesdetrabajocontroller::class,
             'store'
         ]);
@@ -133,7 +162,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 
-    Route::middleware('role:administrador,supervisor')->group(function () {
+    Route::middleware('role:administrador,supervisor, operario')->group(function () {
 
         Route::get('/reportes', [
             reportecontroller::class,
@@ -200,7 +229,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 
-    Route::middleware('role:administrador,supervisor')->group(function () {
+    Route::middleware('role:administrador,supervisor, operario')->group(function () {
 
         Route::get('/ambientes', [
             AmbienteController::class,
@@ -232,7 +261,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
 
-    Route::middleware('role:administrador,supervisor')->group(function () {
+    Route::middleware('role:administrador,supervisor, operario')->group(function () {
 
         Route::get('/habitaciones', [
             habitacionesController::class,
@@ -267,7 +296,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::middleware('role:administrador,supervisor,operario')->group(function () {
 
-        
+
         Route::post('/evidencias', [
             EvidenciaController::class,
             'store'
@@ -280,7 +309,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::middleware('role:administrador,supervisor')->group(function () {
 
-         Route::get('/evidencias', [
+        Route::get('/evidencias', [
             EvidenciaController::class,
             'index'
         ]);

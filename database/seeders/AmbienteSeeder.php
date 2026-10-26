@@ -14,7 +14,6 @@ class AmbienteSeeder extends Seeder
     public function run(): void
     {
         Ambiente::insert([
-            ['nombre' => 'oficinas'],
             ['nombre' => 'golden'],
             ['nombre' => 'restaurante'],
             ['nombre' => 'skybar'],
@@ -26,6 +25,9 @@ class AmbienteSeeder extends Seeder
             ['nombre' => 'porcionamiento'],
             ['nombre' => 'lavanderia'],
             ['nombre' => 'baños_empleados_ss'],
+            ['nombre' => 'terraza'],
+            ['nombre' => 'piscina'],
+            ['nombre' => 'cocina 1']
         ]);
     }
 }

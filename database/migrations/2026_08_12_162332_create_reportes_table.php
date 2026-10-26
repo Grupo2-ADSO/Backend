@@ -9,18 +9,18 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+public function up(): void
     {
         Schema::create('reportes', function (Blueprint $table) {
-          $table->id('IdReporte');
-          $table->string('Tipo', 50);
-          $table->dateTime('fecha_registro');
-          $table->foreignId('usuario_IdUsuario')->constrained('usuarios', 'IdUsuario');
-          $table->integer('habitaciones_No_habitacion');
+            $table->id('IdReporte');
+            $table->string('Tipo', 50);
+            $table->dateTime('fecha_registro');
+            $table->foreignId('usuario_IdUsuario')->constrained('usuarios', 'IdUsuario');
+            $table->integer('habitaciones_No_habitacion')->nullable();
             $table->foreign('habitaciones_No_habitacion')
                   ->references('No_habitacion')
                   ->on('habitaciones');
-          $table->foreignId('ambientes_id_ambiente')->constrained('ambientes', 'id_ambiente');
+            $table->foreignId('ambientes_id_ambiente')->nullable()->constrained('ambientes', 'id_ambiente');
         });
     }
 
