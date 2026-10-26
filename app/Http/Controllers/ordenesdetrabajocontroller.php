@@ -35,7 +35,7 @@ class ordenesdetrabajocontroller extends Controller
 
         if ($idRol == 1 || $idRol == 2) {
 
-            $ordenes = $consulta->get();
+    } elseif ($idRol == 3) {
 
 
         } elseif ($idRol == 3) {
