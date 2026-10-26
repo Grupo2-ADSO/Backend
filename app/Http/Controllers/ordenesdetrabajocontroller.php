@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ordenesdetrabajo;
 
+
 class ordenesdetrabajocontroller extends Controller
 {
+    
 
     public function index(Request $request)
     {
@@ -24,15 +26,33 @@ class ordenesdetrabajocontroller extends Controller
         $idRol = $usuario->rol->IdRol;
 
         $consulta = ordenesdetrabajo::with([
+<<<<<<< HEAD
             'usuario',
+=======
+            'usuario:IdUsuario,Nombre,Apellidos,Rol_IdRol',
+>>>>>>> c3e566c3bbf9dd07ef62221d33581b1088dac22c
             'reporte',
             'ambiente',
             'habitaciones'
         ]);
 
+<<<<<<< HEAD
         if ($idRol == 1 || $idRol == 2) {
 
             $ordenes = $consulta->get();
+=======
+
+        if ($idRol == 1 || $idRol == 2) {
+>>>>>>> c3e566c3bbf9dd07ef62221d33581b1088dac22c
+
+        } elseif ($idRol == 3) {
+
+<<<<<<< HEAD
+            $ordenes = $consulta
+                ->where('usuario_IdUsuario', $usuario->IdUsuario)
+                ->get();
+
+=======
 
         } elseif ($idRol == 3) {
 
@@ -40,6 +60,7 @@ class ordenesdetrabajocontroller extends Controller
                 ->where('usuario_IdUsuario', $usuario->IdUsuario)
                 ->get();
 
+>>>>>>> c3e566c3bbf9dd07ef62221d33581b1088dac22c
         } else {
 
             return response()->json([
@@ -64,7 +85,7 @@ class ordenesdetrabajocontroller extends Controller
         $rol = strtolower(trim($usuario->rol->Nombre));
 
         $orden = ordenesdetrabajo::with([
-            'usuario',
+            'usuario:IdUsuario,Nombre,Apellidos,Rol_IdRol',
             'reporte',
             'ambiente',
             'habitaciones'
@@ -98,30 +119,34 @@ class ordenesdetrabajocontroller extends Controller
 
 
 
-    public function store(Request $request)
+   public function store(Request $request)
     {
         $request->validate([
             'descripcion' => 'required|string|max:200',
             'prioridad' => 'required|in:alta,media,baja',
-            'fecha_creacion' => 'required|date',
-
-            'reportes_IdReporte' =>
-                'required|integer|exists:reportes,idReporte',
-
-            'ambientes_id_ambiente' =>
-                'required|integer|exists:ambientes,id_ambiente',
-
-            'habitaciones_No_habitacion' =>
-                'required|integer|exists:habitaciones,No_habitacion',
-
-            'usuario_IdUsuario' =>
-                'required|integer|exists:usuarios,IdUsuario',
+            'estado' => 'required|in:en proceso,pendiente,terminado',
+            'reportes_IdReporte' => 'required|integer|exists:reportes,IdReporte',
+            'ambientes_id_ambiente' => [
+                'nullable', 'integer', 'exists:ambientes,id_ambiente', 'required_without:habitaciones_No_habitacion'
+            ],
+            'habitaciones_No_habitacion' => [
+                'nullable', 'integer', 'exists:habitaciones,No_habitacion', 'required_without:ambientes_id_ambiente'
+            ],
+            'usuario_IdUsuario' => 'required|integer|exists:usuarios,IdUsuario',
         ]);
+
+        if ($request->ambientes_id_ambiente && $request->habitaciones_No_habitacion) {
+            return response()->json([
+                'resultado' => 'error',
+                'mensaje' => 'La orden debe pertenecer a un ambiente o a una habitacion, no a ambos.'
+            ], 422);
+        }
 
         $orden = ordenesdetrabajo::create([
             'descripcion' => $request->descripcion,
             'prioridad' => $request->prioridad,
-            'fecha_creacion' => $request->fecha_creacion,
+            'estado' => $request->estado,
+            'fecha_creacion' => now(),
             'reportes_IdReporte' => $request->reportes_IdReporte,
             'ambientes_id_ambiente' => $request->ambientes_id_ambiente,
             'habitaciones_No_habitacion' => $request->habitaciones_No_habitacion,
@@ -142,17 +167,28 @@ class ordenesdetrabajocontroller extends Controller
         $request->validate([
             'descripcion' => 'required|string|max:200',
             'prioridad' => 'required|in:alta,media,baja',
-            'fecha_creacion' => 'required|date',
-            'reportes_IdReporte' => 'required|integer|exists:reportes,idReporte',
-            'ambientes_id_ambiente' => 'required|integer|exists:ambientes,id_ambiente',
-            'habitaciones_No_habitacion' => 'required|integer|exists:habitaciones,No_habitacion',
+            'estado' => 'required|in:en proceso,pendiente,terminado',
+            'reportes_IdReporte' => 'required|integer|exists:reportes,IdReporte',
+            'ambientes_id_ambiente' => [
+                'nullable', 'integer', 'exists:ambientes,id_ambiente', 'required_without:habitaciones_No_habitacion'
+            ],
+            'habitaciones_No_habitacion' => [
+                'nullable', 'integer', 'exists:habitaciones,No_habitacion', 'required_without:ambientes_id_ambiente'
+            ],
             'usuario_IdUsuario' => 'required|integer|exists:usuarios,IdUsuario',
         ]);
+
+        if ($request->ambientes_id_ambiente && $request->habitaciones_No_habitacion) {
+            return response()->json([
+                'resultado' => 'error',
+                'mensaje' => 'La orden debe pertenecer a un ambiente o a una habitacion, no a ambos.'
+            ], 422);
+        }
 
         $orden->update([
             'descripcion' => $request->descripcion,
             'prioridad' => $request->prioridad,
-            'fecha_creacion' => $request->fecha_creacion,
+            'estado' => $request->estado, // NUEVO CAMPO
             'reportes_IdReporte' => $request->reportes_IdReporte,
             'ambientes_id_ambiente' => $request->ambientes_id_ambiente,
             'habitaciones_No_habitacion' => $request->habitaciones_No_habitacion,
@@ -177,6 +213,7 @@ class ordenesdetrabajocontroller extends Controller
         ]);
     }
 
+<<<<<<< HEAD
     public function ordenesEnProcesoPorUsuario($usuario_id)
     {
         $ordenes = OrdenTrabajo::where('usuario_id', $usuario_id)
@@ -185,4 +222,21 @@ class ordenesdetrabajocontroller extends Controller
 
         return response()->json($ordenes);
     }
+=======
+    public function cambiarEstado(Request $request, $id)
+{
+    $request->validate([
+        'estado' => 'required|in:en proceso,pendiente,terminado'
+    ]);
+
+    $orden = ordenesdetrabajo::findOrFail($id);
+    $orden->estado = $request->estado;
+    $orden->save();
+
+    return response()->json([
+        'mensaje' => 'Estado actualizado a: ' . $orden->estado,
+        'orden' => $orden
+    ]);
+}
+>>>>>>> c3e566c3bbf9dd07ef62221d33581b1088dac22c
 }

@@ -24,12 +24,20 @@ class usuario extends Authenticatable
         'Estado',
         'Cedula',
         'Telefono',
-        'Rol_IdRol'
+        'Rol_IdRol',
+        'FotoPerfil'
     ];
 
     protected $hidden = [
-        'Contrasena',
+        'contrasena',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'CorreoVerificadoEn' => 'datetime',
+        ];
+    }
 
     public function getAuthPassword()
     {

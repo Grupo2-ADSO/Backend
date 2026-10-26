@@ -111,7 +111,7 @@ class AmbienteController extends Controller
                 return response()->json([
                     "resultado" => "error",
                     "mensaje" => "El ambiente solicitado no existe"
-                ], 400);
+                ], 404);
             }
 
             $ambiente->delete();
