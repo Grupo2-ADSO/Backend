@@ -39,9 +39,6 @@ class ordenesdetrabajocontroller extends Controller
 
         } elseif ($idRol == 3) {
 
-
-        } elseif ($idRol == 3) {
-
             $ordenes = $consulta
                 ->where('usuario_IdUsuario', $usuario->IdUsuario)
                 ->get();
