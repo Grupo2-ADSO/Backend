@@ -15,7 +15,7 @@ class Evidencia extends Model
         "evaluacion_idEvalucion"
     ];
 
-    public $table = "evidencias";
+    public $table = "evidencia";
 
     public $primaryKey = 'idEvidencia';
 

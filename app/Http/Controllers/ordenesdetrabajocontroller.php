@@ -8,7 +8,7 @@ use App\Models\ordenesdetrabajo;
 
 class ordenesdetrabajocontroller extends Controller
 {
-    
+
 
     public function index(Request $request)
     {
@@ -26,17 +26,16 @@ class ordenesdetrabajocontroller extends Controller
         $idRol = $usuario->rol->IdRol;
 
         $consulta = ordenesdetrabajo::with([
+            'usuario',
             'usuario:IdUsuario,Nombre,Apellidos,Rol_IdRol',
             'reporte',
             'ambiente',
             'habitaciones'
         ]);
 
-
         if ($idRol == 1 || $idRol == 2) {
 
-    } elseif ($idRol == 3) {
-
+            $ordenes = $consulta->get();
 
         } elseif ($idRol == 3) {
 
@@ -102,7 +101,7 @@ class ordenesdetrabajocontroller extends Controller
 
 
 
-   public function store(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'descripcion' => 'required|string|max:200',
@@ -110,10 +109,16 @@ class ordenesdetrabajocontroller extends Controller
             'estado' => 'required|in:en proceso,pendiente,terminado',
             'reportes_IdReporte' => 'required|integer|exists:reportes,IdReporte',
             'ambientes_id_ambiente' => [
-                'nullable', 'integer', 'exists:ambientes,id_ambiente', 'required_without:habitaciones_No_habitacion'
+                'nullable',
+                'integer',
+                'exists:ambientes,id_ambiente',
+                'required_without:habitaciones_No_habitacion'
             ],
             'habitaciones_No_habitacion' => [
-                'nullable', 'integer', 'exists:habitaciones,No_habitacion', 'required_without:ambientes_id_ambiente'
+                'nullable',
+                'integer',
+                'exists:habitaciones,No_habitacion',
+                'required_without:ambientes_id_ambiente'
             ],
             'usuario_IdUsuario' => 'required|integer|exists:usuarios,IdUsuario',
         ]);
@@ -153,10 +158,16 @@ class ordenesdetrabajocontroller extends Controller
             'estado' => 'required|in:en proceso,pendiente,terminado',
             'reportes_IdReporte' => 'required|integer|exists:reportes,IdReporte',
             'ambientes_id_ambiente' => [
-                'nullable', 'integer', 'exists:ambientes,id_ambiente', 'required_without:habitaciones_No_habitacion'
+                'nullable',
+                'integer',
+                'exists:ambientes,id_ambiente',
+                'required_without:habitaciones_No_habitacion'
             ],
             'habitaciones_No_habitacion' => [
-                'nullable', 'integer', 'exists:habitaciones,No_habitacion', 'required_without:ambientes_id_ambiente'
+                'nullable',
+                'integer',
+                'exists:habitaciones,No_habitacion',
+                'required_without:ambientes_id_ambiente'
             ],
             'usuario_IdUsuario' => 'required|integer|exists:usuarios,IdUsuario',
         ]);
@@ -196,19 +207,27 @@ class ordenesdetrabajocontroller extends Controller
         ]);
     }
 
+    public function ordenesEnProcesoPorUsuario($usuario_id)
+    {
+        $ordenes = OrdenTrabajo::where('usuario_id', $usuario_id)
+            ->where('estado', 'en proceso')
+            ->get();
+
+        return response()->json($ordenes);
+    }
     public function cambiarEstado(Request $request, $id)
-{
-    $request->validate([
-        'estado' => 'required|in:en proceso,pendiente,terminado'
-    ]);
+    {
+        $request->validate([
+            'estado' => 'required|in:en proceso,pendiente,terminado'
+        ]);
 
-    $orden = ordenesdetrabajo::findOrFail($id);
-    $orden->estado = $request->estado;
-    $orden->save();
+        $orden = ordenesdetrabajo::findOrFail($id);
+        $orden->estado = $request->estado;
+        $orden->save();
 
-    return response()->json([
-        'mensaje' => 'Estado actualizado a: ' . $orden->estado,
-        'orden' => $orden
-    ]);
-}
+        return response()->json([
+            'mensaje' => 'Estado actualizado a: ' . $orden->estado,
+            'orden' => $orden
+        ]);
+    }
 }

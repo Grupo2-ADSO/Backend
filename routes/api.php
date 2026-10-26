@@ -111,7 +111,7 @@ Route::middleware('auth:sanctum')->group(function () {
         ]);
     });
 
-    Route::middleware('role:administrador')->group(function () {
+    Route::middleware('role:administrador,')->group(function () {
 
         Route::post('/roles', [
             rolcontroller::class,
@@ -316,7 +316,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 
-    Route::middleware('role:administrador,supervisor')->group(function () {
+    Route::middleware('role:administrador,supervisor, operario')->group(function () {
 
         Route::get('/evidencias', [
             EvidenciaController::class,
