@@ -11,6 +11,7 @@ use App\Http\Controllers\InformacionRolController;
 use App\Http\Controllers\AmbienteController;
 use App\Http\Controllers\EvidenciaController;
 use App\Http\Controllers\habitacionesController;
+use App\Http\Controllers\VerificarCorreoController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -22,8 +23,16 @@ Route::get('/hora', function () {
 
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::get('/correo/verificar/{id}/{hash}', VerificarCorreoController::class)
+    ->middleware('signed')
+    ->name('correo.verificar');
 
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('/perfil', [
+        AuthController::class,
+        'perfil'
+    ]);
 
     Route::put('/perfil/correo', [
         AuthController::class,

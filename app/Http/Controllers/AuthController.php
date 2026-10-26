@@ -6,6 +6,7 @@ use App\Models\usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use App\Notifications\VerificarCorreo;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
@@ -68,11 +69,29 @@ class AuthController extends Controller
         ], 200);
     }
 
+    public function perfil(Request $request)
+    {
+        $usuario = $request->user();
+
+        return response()->json([
+            'resultado' => 'ok',
+            'usuario' => [
+                'IdUsuario' => $usuario->IdUsuario,
+                'Nombre' => $usuario->Nombre,
+                'Apellidos' => $usuario->Apellidos,
+                'Correo' => $usuario->Correo,
+                'Cedula' => $usuario->Cedula,
+                'Telefono' => $usuario->Telefono,
+                'FotoPerfil' => $usuario->FotoPerfil
+            ]
+        ]);
+    }
+
     public function cambiarCorreo(Request $request)
     {
         $request->validate([
             'Contrasena' => 'required|string',
-            'Correo' => 'required|email|max:150|unique:usuarios,Correo'
+            'Correo' => 'required|email|max:150|unique:usuarios,Correo|unique:usuarios,CorreoPendiente'
         ]);
 
         $usuario = $request->user();
@@ -84,13 +103,16 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $usuario->Correo = $request->Correo;
+        $usuario->CorreoPendiente = $request->Correo;
         $usuario->save();
+
+        $usuario->notify(new VerificarCorreo());
 
         return response()->json([
             'resultado' => 'ok',
-            'mensaje' => 'correo actualizado correctamente.',
-            'Correo' => $usuario->Correo
+            'mensaje' => 'Te enviamos un enlace para verificar tu nuevo correo.',
+            'Correo' => $usuario->Correo,
+            'CorreoPendiente' => $usuario->CorreoPendiente
         ]);
     }
 

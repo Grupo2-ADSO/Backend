@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\usuario;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class VerificarCorreoController extends Controller
 {
@@ -19,17 +18,21 @@ class VerificarCorreoController extends Controller
 
         $usuario = usuario::find($id);
 
-        if (!$usuario || !hash_equals(sha1($usuario->Correo), $hash)) {
+        if (
+            !$usuario ||
+            !$usuario->CorreoPendiente ||
+            !hash_equals(sha1($usuario->CorreoPendiente), $hash)
+        ) {
             return response()->json([
                 'resultado' => 'error',
                 'mensaje' => 'El enlace no es valido para este correo.'
             ], 403);
         }
 
-        if (!$usuario->CorreoVerificadoEn) {
-            $usuario->CorreoVerificadoEn = now();
-            $usuario->save();
-        }
+        $usuario->Correo = $usuario->CorreoPendiente;
+        $usuario->CorreoPendiente = null;
+        $usuario->CorreoVerificadoEn = now();
+        $usuario->save();
 
         return response()->json([
             'resultado' => 'ok',
