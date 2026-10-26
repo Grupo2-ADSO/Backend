@@ -20,6 +20,7 @@ class usuario extends Authenticatable
         'Nombre',
         'Apellidos',
         'Correo',
+        'CorreoPendiente',
         'Contrasena',
         'Estado',
         'Cedula',
@@ -51,5 +52,10 @@ class usuario extends Authenticatable
             'Rol_IdRol',
             'IdRol'
         );
+    }
+
+    public function routeNotificationForMail($notification): string
+    {
+        return $this->CorreoPendiente ?? $this->Correo;
     }
 }

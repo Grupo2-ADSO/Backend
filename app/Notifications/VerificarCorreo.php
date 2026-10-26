@@ -32,7 +32,7 @@ class VerificarCorreo extends Notification
             now()->addMinutes(30),
             [
                 'id' => $notifiable->getKey(),
-                'hash' => sha1($notifiable->Correo),
+                'hash' => sha1($notifiable->CorreoPendiente),
             ]
         );
 
