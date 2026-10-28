@@ -35,13 +35,20 @@ class AuthController extends Controller
             ], 401);
         }
 
+        if (strtolower($usuario->Estado) === 'inactivo') {
+            return response()->json([
+                'resultado' => 'error',
+                'mensaje' => 'Tu cuenta ha sido inhabilitada. Contacta al administrador.'
+            ], 403);
+        }
+
+
         if (!$usuario->rol) {
             return response()->json([
                 'resultado' => 'error',
                 'mensaje' => 'El usuario no tiene un rol asignado.'
             ], 403);
         }
-
 
         $token = $usuario->createToken('api-token')->plainTextToken;
 
