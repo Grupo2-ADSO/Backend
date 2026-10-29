@@ -9,8 +9,9 @@ class RolSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('rols')->insert([
+        DB::table('rols')->upsert(
             [
+                [
                 'IdRol' => 1,
                 'nombre' => 'Administrador',
             ],
@@ -22,6 +23,9 @@ class RolSeeder extends Seeder
                 'IdRol' => 3,
                 'nombre' => 'Operario',
             ],
-        ]);
+            ],
+            ['IdRol'],
+            ['nombre'],
+        );
     }
 }
