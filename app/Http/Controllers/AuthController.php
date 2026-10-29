@@ -33,7 +33,7 @@ class AuthController extends Controller
             return response()->json([
                 'resultado' => 'error',
                 'mensaje' => 'Correo o contraseña incorrectos.'
-            ], 401);
+            ], 402);
         }
 
         if (strtolower($usuario->Estado) === 'inactivo') {
