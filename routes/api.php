@@ -24,7 +24,6 @@ Route::get('/hora', function () {
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/correo/verificar/{id}/{hash}', VerificarCorreoController::class)
-    ->middleware('signed')
     ->name('correo.verificar');
 
 Route::middleware('auth:sanctum')->group(function () {

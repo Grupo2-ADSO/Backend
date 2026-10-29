@@ -14,7 +14,7 @@ class ProbarCorreo extends Command
     public function handle()
     {
         Mail::raw('Este es un correo de prueba enviado desde Laravel.', function ($mensaje) {
-            $mensaje->to('chequio791@gmail.com')//este espacio espara ingresar el correo y asegurarse de que sirva
+            $mensaje->to('')//este espacio espara ingresar el correo y asegurarse de que sirva
                 ->subject('Prueba de correo Laravel');
         });
 

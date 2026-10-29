@@ -10,10 +10,11 @@ class VerificarCorreoController extends Controller
     public function __invoke(Request $request, string $id, string $hash)
     {
         if (!$request->hasValidSignature()) {
-            return response()->json([
-                'resultado' => 'error',
-                'mensaje' => 'El enlace es invalido o ha caducado.'
-            ], 403);
+            return redirect(
+                env('FRONTEND_URL') .
+                '/verificar-correo?estado=error&mensaje=' .
+                urlencode('El enlace es invalido o ha caducado.')
+            );
         }
 
         $usuario = usuario::find($id);
@@ -23,10 +24,11 @@ class VerificarCorreoController extends Controller
             !$usuario->CorreoPendiente ||
             !hash_equals(sha1($usuario->CorreoPendiente), $hash)
         ) {
-            return response()->json([
-                'resultado' => 'error',
-                'mensaje' => 'El enlace no es valido para este correo.'
-            ], 403);
+            return redirect(
+                env('FRONTEND_URL') .
+                '/verificar-correo?estado=error&mensaje=' .
+                urlencode('El enlace no es valido para este correo.')
+            );
         }
 
         $usuario->Correo = $usuario->CorreoPendiente;
@@ -34,9 +36,10 @@ class VerificarCorreoController extends Controller
         $usuario->CorreoVerificadoEn = now();
         $usuario->save();
 
-        return response()->json([
-            'resultado' => 'ok',
-            'mensaje' => 'Correo verificado correctamente.'
-        ]);
+        return redirect(
+            env('FRONTEND_URL') .
+            '/verificar-correo?estado=exito&mensaje=' .
+            urlencode('Correo verificado correctamente.')
+        );
     }
 }
