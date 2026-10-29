@@ -12,15 +12,15 @@ class RolSeeder extends Seeder
         DB::table('rols')->insert([
             [
                 'IdRol' => 1,
-                'Nombre' => 'Administrador',
+                'nombre' => 'Administrador',
             ],
             [
                 'IdRol' => 2,
-                'Nombre' => 'Supervisor',
+                'nombre' => 'Supervisor',
             ],
             [
                 'IdRol' => 3,
-                'Nombre' => 'Operario',
+                'nombre' => 'Operario',
             ],
         ]);
     }
