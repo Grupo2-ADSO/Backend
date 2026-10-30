@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\usuario;
+use App\Models\Usuario;
 use Illuminate\Http\Request;
 
 class VerificarCorreoController extends Controller

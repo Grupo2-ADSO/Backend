@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\historial;
+use App\Models\Historial;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 

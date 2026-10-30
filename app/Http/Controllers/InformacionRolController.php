@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\usuario;
-use App\Models\rol;
+use App\Models\Usuario;
+use App\Models\Rol;
 use App\Models\Ambiente;
-use App\Models\evaluacion;
+use App\Models\Evaluacion;
 use App\Models\Evidencia;
-use App\Models\habitaciones;
-use App\Models\historial;
-use App\Models\ordenesdetrabajo;
-use App\Models\reporte;
+use App\Models\Habitaciones;
+use App\Models\Historial;
+use App\Models\OrdenesDeTrabajo;
+use App\Models\Reporte;
 use Illuminate\Http\Request;
 
 class InformacionRolController extends Controller
