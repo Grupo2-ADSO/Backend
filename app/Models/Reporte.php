@@ -7,7 +7,7 @@ use App\Models\habitaciones;
 use App\Models\Ambiente;
 use App\Models\usuario;
 
-class reporte extends Model
+class Reporte extends Model
 {
     public $table = 'reportes';
 
