@@ -30,7 +30,7 @@ class Usuario extends Authenticatable
     ];
 
     protected $hidden = [
-        'contrasena',
+        'Contrasena',
     ];
 
     protected function casts(): array
