@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 
-class usuariocontroller extends Controller
+class UsuarioController extends Controller
 {
     // Mostrar todos los usuarios
     public function index()
