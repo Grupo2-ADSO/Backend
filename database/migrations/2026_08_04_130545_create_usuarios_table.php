@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('Nombre', 100);
             $table->string('Apellidos', 100);
             $table->string('Correo', 150);
-            $table->string('contrasena', 100);
+            $table->string('Contrasena', 100);
             $table->enum('Estado', ['Activo', 'Inactivo'])->default('Activo');
             $table->string('Cedula', 11)->unique();
             $table->string('Telefono', 11)->nullable();
