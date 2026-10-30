@@ -29,7 +29,7 @@ class AuthController extends Controller
             ], 401);
         }
 
-        if (!Hash::check($request->Contrasena, $usuario->contrasena)) {
+        if (!Hash::check($request->Contrasena, $usuario->Contrasena)) {
             return response()->json([
                 'resultado' => 'error',
                 'mensaje' => 'Correo o contraseña incorrectos.'
@@ -132,7 +132,7 @@ class AuthController extends Controller
 
         $usuario = $request->user();
 
-        if (!Hash::check($request->Contrasena, $usuario->contrasena)) {
+        if (!Hash::check($request->Contrasena, $usuario->Contrasena)) {
             return response()->json([
                 'resultado' => 'error',
                 'mensaje' => 'La contraseña actual es incorrecta.'
@@ -157,7 +157,7 @@ class AuthController extends Controller
 
         $usuario = $request->user();
 
-        if (!Hash::check($request->Contrasena, $usuario->contrasena)) {
+        if (!Hash::check($request->Contrasena, $usuario->Contrasena)) {
             return response()->json([
                 'resultado' => 'error',
                 'mensaje' => 'La contraseña actual es incorrecta'
