@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\evaluacion;
 
-class evaluacioncontroller extends Controller
+class Evaluacioncontroller extends Controller
 {
 
     public function index()
