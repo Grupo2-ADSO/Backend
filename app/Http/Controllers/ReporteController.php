@@ -11,7 +11,7 @@ class ReporteController extends Controller
 
     public function index()
     {
-        $reportes = reporte::with([
+        $reportes = Reporte::with([
             'usuario',
             'habitaciones',
             'ambiente'
@@ -24,7 +24,7 @@ class ReporteController extends Controller
 
     public function show($id)
     {
-        $reporte = reporte::with([
+        $reporte = Reporte::with([
             'usuario',
             'habitaciones',
             'ambiente'
@@ -63,7 +63,7 @@ class ReporteController extends Controller
                 'required|integer|exists:usuarios,IdUsuario',
         ]);
 
-        $reporte = reporte::create([
+        $reporte = Reporte::create([
             'Tipo' => $request->Tipo,
             'fecha_registro' => $request->fecha_registro,
 
@@ -87,7 +87,7 @@ class ReporteController extends Controller
 
     public function update(Request $request, $id)
     {
-        $reporte = reporte::findOrFail($id);
+        $reporte = Reporte::findOrFail($id);
 
        $request->validate([
             'Tipo' => 'required|string|max:50',
@@ -130,7 +130,7 @@ class ReporteController extends Controller
 
     public function destroy($id)
     {
-        $reporte = reporte::findOrFail($id);
+        $reporte = Reporte::findOrFail($id);
 
         $reporte->delete();
 
