@@ -45,7 +45,7 @@ class Usuario extends Authenticatable
         return $this->Contrasena;
     }
 
-    public function rol()
+    public function Rol()
     {
         return $this->belongsTo(
             rol::class,
