@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\rol;
 
 
-class Rolcontroller extends Controller
+class RolController extends Controller
 {
 
     //Mostrar todos los registros
