@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\historial;
+use App\Models\Historial;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,21 +13,21 @@ class HistorialSeeder extends Seeder
      */
     public function run(): void
     {
-        historial::create([
+        Historial::create([
             'id_orden' => 1,
             'estado' => 'terminado',
             'fecha' => '2026-03-07',
             'observaciones' => 'Exelente trabajo',
             'usuario_IdUsuario' => 1
         ]);
-        historial::create([
+        Historial::create([
             'id_orden' => 2,
             'estado' => 'terminado',
             'fecha' => '2026-03-07',
             'observaciones' => 'Bien, pero conpletar en menor tiempo',
             'usuario_IdUsuario' => 2
         ]);
-        historial::create([
+        Historial::create([
             'id_orden' => 3,
             'estado' => 'terminado',
             'fecha' => '2026-03-07',
@@ -41,7 +41,7 @@ class HistorialSeeder extends Seeder
             'observaciones' => 'Ok',
             'usuario_IdUsuario' => 1
         ]);
-        historial::create([
+        Historial::create([
             'id_orden' => 2,
             'estado' => 'terminado',
             'fecha' => '2026-03-07',
