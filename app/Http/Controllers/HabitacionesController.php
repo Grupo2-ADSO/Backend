@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\habitaciones;
 
-class habitacionesController extends Controller
+class HabitacionesController extends Controller
 {
 public function index(Request $request)
 {
