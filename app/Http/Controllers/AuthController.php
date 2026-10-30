@@ -18,7 +18,7 @@ class AuthController extends Controller
             'Contrasena' => 'required'
         ]);
 
-        $usuario = usuario::with('rol')
+        $usuario = Usuario::with('rol')
             ->where('Correo', $request->Correo)
             ->first();
 
@@ -103,7 +103,7 @@ class AuthController extends Controller
 
         $usuario = $request->user();
 
-        if (!Hash::check($request->Contrasena, $usuario->contrasena)) {
+        if (!Hash::check($request->Contrasena, $usuario->Contrasena)) {
             return response()->json([
                 'resultado' => 'error',
                 'mensaje' => 'La contraseña actual es incorrecta.'
