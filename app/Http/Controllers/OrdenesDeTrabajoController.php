@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\ordenesdetrabajo;
 
 
-class Ordenesdetrabajocontroller extends Controller
+class OrdenesDeTrabajoController extends Controller
 {
 
 
