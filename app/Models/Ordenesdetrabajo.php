@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ordenesdetrabajo extends Model
+class Ordenesdetrabajo extends Model
 {
     public $table = 'ordenes_de_trabajos';
 

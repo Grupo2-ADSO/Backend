@@ -17,3 +17,7 @@ echo "Ejecutando migraciones y seeders de base de datos..."
 php artisan migrate --seed --force || true
 
 exec apache2-foreground
+<<<<<<< HEAD
+
+=======
+>>>>>>> dfb5df6 (actualizacion_V8)
