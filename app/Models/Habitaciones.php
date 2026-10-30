@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 
-class habitaciones extends Model
+class Habitaciones extends Model
 {
     public $fillable = [
         'No_habitacion',
