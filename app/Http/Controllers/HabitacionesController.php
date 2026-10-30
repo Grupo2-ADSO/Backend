@@ -27,12 +27,12 @@ public function index(Request $request)
         
         if ($idRol === 1 || $idRol === 2) {
 
-            $habitaciones = habitaciones::all();
+            $habitaciones = Habitaciones::all();
 
         
         } elseif ($idRol === 3) {
 
-            $habitacionesIds = \App\Models\ordenesdetrabajo::where(
+            $habitacionesIds = \App\Models\OrdenesDeTrabajo::where(
                 'usuario_IdUsuario',
                 $usuario->IdUsuario
             )
@@ -41,7 +41,7 @@ public function index(Request $request)
             ->filter()
             ->values();
 
-            $habitaciones = habitaciones::whereIn(
+            $habitaciones = Habitaciones::whereIn(
                 'No_habitacion',
                 $habitacionesIds
             )->get();
@@ -72,7 +72,7 @@ public function index(Request $request)
     public function store(Request $request)
     {
         try {
-            $habitacion = habitaciones::create([
+            $habitacion = Habitaciones::create([
                 'No_habitacion' => $request->No_habitacion,
                 'piso' => $request->piso,
                 'tipo_hab' => $request->tipo_hab
@@ -95,7 +95,7 @@ public function index(Request $request)
     public function show($id)
     {
         try {
-            $habitacion = habitaciones::find($id);
+            $habitacion = Habitaciones::find($id);
 
             if (!$habitacion) {
                 return response()->json([
@@ -120,7 +120,7 @@ public function index(Request $request)
     public function update(Request $request, $id)
     {
         try {
-            $habitacion = habitaciones::find($id);
+            $habitacion = Habitaciones::find($id);
 
             if (!$habitacion) {
                 return response()->json([
@@ -156,7 +156,7 @@ public function index(Request $request)
     public function destroy($id)
     {
         try {
-            $habitacion = habitaciones::find($id);
+            $habitacion = Habitaciones::find($id);
 
             if (!$habitacion) {
                 return response()->json([
