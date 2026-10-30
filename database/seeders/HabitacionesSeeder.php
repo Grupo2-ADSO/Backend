@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Http\Controllers\HabitacionesController;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\habitaciones;
+use App\Models\Habitaciones;
 
 class HabitacionesSeeder extends Seeder
 {
@@ -24,7 +24,7 @@ class HabitacionesSeeder extends Seeder
                     $tipo = "TDXN";
                 }
 
-                habitaciones::updateOrCreate(
+                Habitaciones::updateOrCreate(
                     ['No_habitacion' => $habitacion],
                     [
                         'piso' => $piso,
