@@ -27,12 +27,12 @@ public function index(Request $request)
         
         if ($idRol == 1 || $idRol == 2) {
 
-            $historial = historial::all();
+            $historial = Historial::all();
 
         
         } elseif ($idRol == 3) {
 
-            $historial = historial::where(
+            $historial = Historial::where(
                 'usuario_IdUsuario',
                 $usuario->IdUsuario
             )->get();
@@ -63,7 +63,7 @@ public function index(Request $request)
     public function show($id)
     {
         try {
-            $historial = historial::find($id);
+            $historial = Historial::find($id);
 
             if (!$historial) {
                 return response()->json([
@@ -88,7 +88,7 @@ public function index(Request $request)
     public function update(Request $request, $id)
     {
         try {
-            $historial = historial::find($id);
+            $historial = Historial::find($id);
 
             if (!$historial) {
                 return response()->json([
@@ -137,7 +137,7 @@ public function index(Request $request)
     public function destroy($id)
     {
         try {
-            $historial = historial::find($id);
+            $historial = Historial::find($id);
 
             if (!$historial) {
                 return response()->json([
