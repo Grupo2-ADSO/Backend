@@ -24,11 +24,11 @@ class Reporte extends Model
     ];
     public function usuario()
     {
-        return $this->belongsTo(usuario::class,'usuario_IdUsuario','IdUsuario');
+        return $this->belongsTo(Usuario::class,'usuario_IdUsuario','IdUsuario');
     }
     public function habitaciones()
     {
-        return $this->belongsTo(habitaciones::class,'habitaciones_No_habitacion','No_habitacion');
+        return $this->belongsTo(Habitaciones::class,'habitaciones_No_habitacion','No_habitacion');
     }
     public function ambiente()
     {
