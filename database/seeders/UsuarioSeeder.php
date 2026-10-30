@@ -13,7 +13,6 @@ class UsuarioSeeder extends Seeder
         DB::table('usuarios')->upsert(
             [
                 [
-                    'IdUsuario' => 1,
                     'Nombre' => 'Carlos',
                     'Apellidos' => 'Rodríguez',
                     'Correo' => 'carlos@holidayinn.com',
@@ -24,7 +23,6 @@ class UsuarioSeeder extends Seeder
                     'Rol_IdRol' => 1,
                 ],
                 [
-                    'IdUsuario' => 2,
                     'Nombre' => 'Laura',
                     'Apellidos' => 'Gómez',
                     'Correo' => 'laura@holidayinn.com',
@@ -35,7 +33,6 @@ class UsuarioSeeder extends Seeder
                     'Rol_IdRol' => 2,
                 ],
                 [
-                    'IdUsuario' => 3,
                     'Nombre' => 'Andrés',
                     'Apellidos' => 'Martínez',
                     'Correo' => 'andres@holidayinn.com',
@@ -46,7 +43,6 @@ class UsuarioSeeder extends Seeder
                     'Rol_IdRol' => 3,
                 ],
                 [
-                    'IdUsuario' => 4,
                     'Nombre' => 'Paula',
                     'Apellidos' => 'Hernández',
                     'Correo' => 'paula@holidayinn.com',
