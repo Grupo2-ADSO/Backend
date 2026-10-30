@@ -10,7 +10,7 @@ class EvaluacionController extends Controller
 
     public function index()
     {
-        $evaluaciones = evaluacion::all();
+        $evaluaciones = Evaluacion::all();
 
         return response()->json($evaluaciones);
     }
@@ -18,7 +18,7 @@ class EvaluacionController extends Controller
 
     public function show($id)
     {
-        $evaluacion = evaluacion::findOrFail($id);
+        $evaluacion = Evaluacion::findOrFail($id);
 
         return response()->json($evaluacion);
     }
@@ -32,7 +32,7 @@ class EvaluacionController extends Controller
             'fecha_evaluacion' => 'required|date',
         ]);
 
-        $evaluacion = evaluacion::create([
+        $evaluacion = Evaluacion::create([
             'comentario' => $request->comentario,
             'calificacion' => $request->calificacion,
             'fecha_evaluacion' => $request->fecha_evaluacion,
@@ -47,7 +47,7 @@ class EvaluacionController extends Controller
 
     public function update(Request $request, $id)
     {
-        $evaluacion = evaluacion::findOrFail($id);
+        $evaluacion = Evaluacion::findOrFail($id);
 
         $request->validate([
             'comentario' => 'required|string|max:500',
@@ -69,7 +69,7 @@ class EvaluacionController extends Controller
 
     public function destroy($id)
     {
-        $evaluacion = evaluacion::findOrFail($id);
+        $evaluacion = Evaluacion::findOrFail($id);
 
         $evaluacion->delete();
 
