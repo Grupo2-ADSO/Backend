@@ -49,21 +49,21 @@ class InformacionRolController extends Controller
 
                 'informacion' => [
 
-                    'usuarios' => usuario::with('rol')->get(),
+                    'usuarios' => Usuario::with('rol')->get(),
 
-                    'roles' => rol::all(),
+                    'roles' => Rol::all(),
 
-                    'habitaciones' => habitaciones::all(),
+                    'habitaciones' => Habitaciones::all(),
 
                     'ambientes' => Ambiente::all(),
 
-                    'reportes' => reporte::with([
+                    'reportes' => Reporte::with([
                         'usuario',
                         'habitacion',
                         'ambiente'
                     ])->get(),
 
-                    'ordenes' => ordenesdetrabajo::with([
+                    'ordenes' => OrdenesDeTrabajo::with([
                         'usuario',
                         'reporte',
                         'ambiente',
@@ -72,9 +72,9 @@ class InformacionRolController extends Controller
 
                     'evidencias' => Evidencia::all(),
 
-                    'evaluaciones' => evaluacion::all(),
+                    'evaluaciones' => Evaluacion::all(),
 
-                    'historial' => historial::all()
+                    'historial' => Historial::all()
                 ]
             ], 200);
         }
@@ -96,17 +96,17 @@ class InformacionRolController extends Controller
 
                 'informacion' => [
 
-                    'habitaciones' => habitaciones::all(),
+                    'habitaciones' => Habitaciones::all(),
 
                     'ambientes' => Ambiente::all(),
 
-                    'reportes' => reporte::with([
+                    'reportes' => Reporte::with([
                         'usuario',
                         'habitacion',
                         'ambiente'
                     ])->get(),
 
-                    'ordenes' => ordenesdetrabajo::with([
+                    'ordenes' => OrdenesDeTrabajo::with([
                         'usuario',
                         'reporte',
                         'ambiente',
@@ -115,9 +115,9 @@ class InformacionRolController extends Controller
 
                     'evidencias' => Evidencia::all(),
 
-                    'evaluaciones' => evaluacion::all(),
+                    'evaluaciones' => Evaluacion::all(),
 
-                    'historial' => historial::all()
+                    'historial' => Historial::all()
                 ]
             ], 200);
         }
@@ -125,7 +125,7 @@ class InformacionRolController extends Controller
        
         if ($rol === 'operario') {
 
-            $ordenes = ordenesdetrabajo::with([
+            $ordenes = OrdenesDeTrabajo::with([
                 'reporte',
                 'ambiente',
                 'habitacion'
@@ -150,12 +150,12 @@ class InformacionRolController extends Controller
                 ->unique()
                 ->toArray();
 
-            $habitacionesOperario = habitaciones::whereIn(
+            $habitacionesOperario = Habitaciones::whereIn(
                 'No_habitacion',
                 $idsHabitaciones
             )->get();
 
-            $historialOperario = historial::where(
+            $historialOperario = Historial::where(
                 'usuario_IdUsuario',
                 $usuario->IdUsuario
             )->get();
@@ -166,7 +166,7 @@ class InformacionRolController extends Controller
                 ->unique()
                 ->toArray();
 
-            $evaluacionesOperario = evaluacion::whereIn(
+            $evaluacionesOperario = Evaluacion::whereIn(
                 'idEvaluacion',
                 $idsEvaluaciones
             )->get();
