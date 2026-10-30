@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\OrdenesDeTrabajo;
+use App\Models\ordenesdetrabajo;
 
-class OrdenesDeTrabajoController extends Controller
+
+class ordenesdetrabajocontroller extends Controller
 {
+
+
     public function index(Request $request)
     {
         $usuario = $request->user();
+
         $usuario->load('rol');
 
         if (!$usuario->rol) {
@@ -21,7 +25,7 @@ class OrdenesDeTrabajoController extends Controller
 
         $idRol = $usuario->rol->IdRol;
 
-        $consulta = OrdenesDeTrabajo::with([
+        $consulta = ordenesdetrabajo::with([
             'usuario',
             'usuario:IdUsuario,Nombre,Apellidos,Rol_IdRol',
             'reporte',
@@ -30,12 +34,17 @@ class OrdenesDeTrabajoController extends Controller
         ]);
 
         if ($idRol == 1 || $idRol == 2) {
+
             $ordenes = $consulta->get();
+
         } elseif ($idRol == 3) {
+
             $ordenes = $consulta
                 ->where('usuario_IdUsuario', $usuario->IdUsuario)
                 ->get();
+
         } else {
+
             return response()->json([
                 'resultado' => 'error',
                 'mensaje' => 'Rol no autorizado.'
@@ -48,14 +57,16 @@ class OrdenesDeTrabajoController extends Controller
         ], 200);
     }
 
+
     public function show(Request $request, $id)
     {
         $usuario = $request->user();
+
         $usuario->load('rol');
 
         $rol = strtolower(trim($usuario->rol->Nombre));
 
-        $orden = OrdenesDeTrabajo::with([
+        $orden = ordenesdetrabajo::with([
             'usuario:IdUsuario,Nombre,Apellidos,Rol_IdRol',
             'reporte',
             'ambiente',
@@ -69,10 +80,13 @@ class OrdenesDeTrabajoController extends Controller
             ], 404);
         }
 
+
+
         if (
             $rol === 'operario' &&
             $orden->usuario_IdUsuario != $usuario->IdUsuario
         ) {
+
             return response()->json([
                 'resultado' => 'error',
                 'mensaje' => 'No tienes permiso para consultar esta orden.'
@@ -84,6 +98,8 @@ class OrdenesDeTrabajoController extends Controller
             'orden' => $orden
         ]);
     }
+
+
 
     public function store(Request $request)
     {
@@ -114,7 +130,7 @@ class OrdenesDeTrabajoController extends Controller
             ], 422);
         }
 
-        $orden = OrdenesDeTrabajo::create([
+        $orden = ordenesdetrabajo::create([
             'descripcion' => $request->descripcion,
             'prioridad' => $request->prioridad,
             'estado' => $request->estado,
@@ -131,9 +147,10 @@ class OrdenesDeTrabajoController extends Controller
         ], 201);
     }
 
+
     public function update(Request $request, $id)
     {
-        $orden = OrdenesDeTrabajo::findOrFail($id);
+        $orden = ordenesdetrabajo::findOrFail($id);
 
         $request->validate([
             'descripcion' => 'required|string|max:200',
@@ -165,7 +182,7 @@ class OrdenesDeTrabajoController extends Controller
         $orden->update([
             'descripcion' => $request->descripcion,
             'prioridad' => $request->prioridad,
-            'estado' => $request->estado,
+            'estado' => $request->estado, // NUEVO CAMPO
             'reportes_IdReporte' => $request->reportes_IdReporte,
             'ambientes_id_ambiente' => $request->ambientes_id_ambiente,
             'habitaciones_No_habitacion' => $request->habitaciones_No_habitacion,
@@ -178,9 +195,11 @@ class OrdenesDeTrabajoController extends Controller
         ]);
     }
 
+
     public function destroy($id)
     {
-        $orden = OrdenesDeTrabajo::findOrFail($id);
+        $orden = ordenesdetrabajo::findOrFail($id);
+
         $orden->delete();
 
         return response()->json([
@@ -190,20 +209,19 @@ class OrdenesDeTrabajoController extends Controller
 
     public function ordenesEnProcesoPorUsuario($usuario_id)
     {
-        $ordenes = OrdenesDeTrabajo::where('usuario_id', $usuario_id)
+        $ordenes = OrdenTrabajo::where('usuario_id', $usuario_id)
             ->where('estado', 'en proceso')
             ->get();
 
         return response()->json($ordenes);
     }
-
     public function cambiarEstado(Request $request, $id)
     {
         $request->validate([
             'estado' => 'required|in:en proceso,pendiente,terminado'
         ]);
 
-        $orden = OrdenesDeTrabajo::findOrFail($id);
+        $orden = ordenesdetrabajo::findOrFail($id);
         $orden->estado = $request->estado;
         $orden->save();
 
