@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\historial;
 use Illuminate\Http\Request;
 
-class historialController extends Controller
+class HistorialController extends Controller
 {
 public function index(Request $request)
 {
