@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\reporte;
 
-class reportecontroller extends Controller
+class ReporteController extends Controller
 {
     
 
