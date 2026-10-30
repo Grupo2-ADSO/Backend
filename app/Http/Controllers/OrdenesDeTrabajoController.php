@@ -25,7 +25,7 @@ class OrdenesDeTrabajoController extends Controller
 
         $idRol = $usuario->rol->IdRol;
 
-        $consulta = ordenesdetrabajo::with([
+        $consulta = OrdenesDeTrabajo::with([
             'usuario',
             'usuario:IdUsuario,Nombre,Apellidos,Rol_IdRol',
             'reporte',
@@ -66,7 +66,7 @@ class OrdenesDeTrabajoController extends Controller
 
         $rol = strtolower(trim($usuario->rol->Nombre));
 
-        $orden = ordenesdetrabajo::with([
+        $orden = OrdenesDeTrabajo::with([
             'usuario:IdUsuario,Nombre,Apellidos,Rol_IdRol',
             'reporte',
             'ambiente',
@@ -130,7 +130,7 @@ class OrdenesDeTrabajoController extends Controller
             ], 422);
         }
 
-        $orden = ordenesdetrabajo::create([
+        $orden = OrdenesDeTrabajo::create([
             'descripcion' => $request->descripcion,
             'prioridad' => $request->prioridad,
             'estado' => $request->estado,
@@ -150,7 +150,7 @@ class OrdenesDeTrabajoController extends Controller
 
     public function update(Request $request, $id)
     {
-        $orden = ordenesdetrabajo::findOrFail($id);
+        $orden = OrdenesDeTrabajo::findOrFail($id);
 
         $request->validate([
             'descripcion' => 'required|string|max:200',
@@ -198,7 +198,7 @@ class OrdenesDeTrabajoController extends Controller
 
     public function destroy($id)
     {
-        $orden = ordenesdetrabajo::findOrFail($id);
+        $orden = OrdenesDeTrabajo::findOrFail($id);
 
         $orden->delete();
 
@@ -221,7 +221,7 @@ class OrdenesDeTrabajoController extends Controller
             'estado' => 'required|in:en proceso,pendiente,terminado'
         ]);
 
-        $orden = ordenesdetrabajo::findOrFail($id);
+        $orden = OrdenesDeTrabajo::findOrFail($id);
         $orden->estado = $request->estado;
         $orden->save();
 
