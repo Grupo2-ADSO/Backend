@@ -10,47 +10,59 @@ class UsuarioSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('usuarios')->insert([
+        DB::table('usuarios')->upsert(
             [
-                'Nombre' => 'Carlos',
-                'Apellidos' => 'Rodríguez',
-                'Correo' => 'carlos@holidayinn.com',
-                'Contrasena' => Hash::make('123456'),
-                'Estado' => 'Activo',
-                'Cedula' => 1001001001,
-                'Telefono' => '3001234567',
-                'Rol_IdRol' => 1,
+                [
+                    'Nombre' => 'Carlos',
+                    'Apellidos' => 'Rodríguez',
+                    'Correo' => 'carlos@holidayinn.com',
+                    'contrasena' => Hash::make('123456'),
+                    'Estado' => 'Activo',
+                    'Cedula' => '1098765432',
+                    'Telefono' => '3001234567',
+                    'Rol_IdRol' => 1,
+                ],
+                [
+                    'Nombre' => 'Laura',
+                    'Apellidos' => 'Gómez',
+                    'Correo' => 'laura@holidayinn.com',
+                    'contrasena' => Hash::make('123456'),
+                    'Estado' => 'Activo',
+                    'Cedula' => '1005678234',
+                    'Telefono' => '3002345678',
+                    'Rol_IdRol' => 2,
+                ],
+                [
+                    'Nombre' => 'Andrés',
+                    'Apellidos' => 'Martínez',
+                    'Correo' => 'andres@holidayinn.com',
+                    'contrasena' => Hash::make('123456'),
+                    'Estado' => 'Activo',
+                    'Cedula' => '1123456789',
+                    'Telefono' => '3003456789',
+                    'Rol_IdRol' => 3,
+                ],
+                [
+                    'Nombre' => 'Paula',
+                    'Apellidos' => 'Hernández',
+                    'Correo' => 'paula@holidayinn.com',
+                    'contrasena' => Hash::make('123456'),
+                    'Estado' => 'Activo',
+                    'Cedula' => '1034567892',
+                    'Telefono' => '3004567890',
+                    'Rol_IdRol' => 3,
+                ],
             ],
+            ['Cedula'],
             [
-                'Nombre' => 'Laura',
-                'Apellidos' => 'Gómez',
-                'Correo' => 'laura@holidayinn.com',
-                'Contrasena' => Hash::make('123456'),
-                'Estado' => 'Activo',
-                'Cedula' => 1001001002,
-                'Telefono' => '3002345678',
-                'Rol_IdRol' => 2,
-            ],
-            [
-                'Nombre' => 'Andrés',
-                'Apellidos' => 'Martínez',
-                'Correo' => 'andres@holidayinn.com',
-                'Contrasena' => Hash::make('123456'),
-                'Estado' => 'Activo',
-                'Cedula' => 1001001003,
-                'Telefono' => '3003456789',
-                'Rol_IdRol' => 3,
-            ],
-            [
-                'Nombre' => 'Paula',
-                'Apellidos' => 'Hernández',
-                'Correo' => 'paula@holidayinn.com',
-                'Contrasena' => Hash::make('123456'),
-                'Estado' => 'Activo',
-                'Cedula' => 1001001004,
-                'Telefono' => '3004567890',
-                'Rol_IdRol' => 3,
-            ],
-        ]);
+                'Nombre',
+                'Apellidos',
+                'Correo',
+                'contrasena',
+                'Estado',
+                'Telefono',
+                'Rol_IdRol',
+            ]
+        );
     }
 }
