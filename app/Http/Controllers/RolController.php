@@ -12,7 +12,7 @@ class RolController extends Controller
     //Mostrar todos los registros
     public function index()
     {
-        $roles = rol::all();
+        $roles = Rol::all();
 
         return response()->json($roles);
     }
@@ -25,7 +25,7 @@ class RolController extends Controller
             'Nombre' => 'required|max:100'
         ]);
 
-        $rol = rol::create([
+        $rol = Rol::create([
             'Nombre' => $request->Nombre
         ]);
 
@@ -35,7 +35,7 @@ class RolController extends Controller
     //Mostrar un registro
     public function show($id)
     {
-        $rol = rol::findOrFail($id);
+        $rol = Rol::findOrFail($id);
 
         return response()->json($rol);
     }
