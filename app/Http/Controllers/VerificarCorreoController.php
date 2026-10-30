@@ -17,7 +17,7 @@ class VerificarCorreoController extends Controller
             );
         }
 
-        $usuario = usuario::find($id);
+        $usuario = Usuario::find($id);
 
         if (
             !$usuario ||
