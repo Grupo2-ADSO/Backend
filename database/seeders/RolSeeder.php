@@ -25,7 +25,7 @@ class RolSeeder extends Seeder
             ],
             ],
             ['IdRol'],
-            ['nombre'],
+            ['nombre']
         );
     }
 }
