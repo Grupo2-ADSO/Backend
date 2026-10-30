@@ -12,7 +12,7 @@ class UsuarioController extends Controller
     // Mostrar todos los usuarios
     public function index()
     {
-        $usuarios = usuario::with('rol')->get();
+        $usuarios = Usuario::with('rol')->get();
 
         return response()->json($usuarios);
     }
@@ -21,7 +21,7 @@ class UsuarioController extends Controller
     // Mostrar un usuario específico
     public function show($id)
     {
-        $usuarios = usuario::with('rol')->findOrFail($id);
+        $usuarios = Usuario::with('rol')->findOrFail($id);
 
         return response()->json($usuarios);
     }
@@ -41,7 +41,7 @@ class UsuarioController extends Controller
             'Rol_IdRol' => 'required|exists:rols,IdRol',
         ]);
 
-        $usuarios = usuario::create([
+        $usuarios = Usuario::create([
             'Nombre' => $request->Nombre,
             'Apellidos' => $request->Apellidos,
             'Correo' => $request->Correo,
@@ -62,7 +62,7 @@ class UsuarioController extends Controller
    
     public function update(Request $request, $id)
     {
-        $usuarios = usuario::findOrFail($id);
+        $usuarios = Usuario::findOrFail($id);
 
         $request->validate([
             'Nombre' => 'required|string|max:100',
@@ -100,7 +100,7 @@ class UsuarioController extends Controller
     // Eliminar un usuario
     public function destroy($id)
     {
-        $usuarios = usuario::findOrFail($id);
+        $usuarios = Usuario::findOrFail($id);
 
         $usuarios->delete();
 
