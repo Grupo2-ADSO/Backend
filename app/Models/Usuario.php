@@ -45,10 +45,10 @@ class Usuario extends Authenticatable
         return $this->Contrasena;
     }
 
-    public function Rol()
+    public function rol()
     {
         return $this->belongsTo(
-            rol::class,
+            Rol::class,
             'Rol_IdRol',
             'IdRol'
         );
