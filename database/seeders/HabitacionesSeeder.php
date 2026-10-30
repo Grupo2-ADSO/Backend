@@ -24,7 +24,7 @@ class HabitacionesSeeder extends Seeder
                     $tipo = "TDXN";
                 }
 
-                habitaciones::updateOrCreate(
+                Habitaciones::updateOrCreate(
                     ['No_habitacion' => $habitacion],
                     [
                         'piso' => $piso,
